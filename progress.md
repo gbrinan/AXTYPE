@@ -64,6 +64,24 @@
 - `data.js`, `app.js`, `scripts/build.mjs`, `scripts/check.mjs`, `docs/DESIGN.md`, `findings.md`, `tasks.md`, `README.md`, `CLAUDE.md`, `.gitignore`
 - `design/{Main,Landing,Question,Shared,OGCard,ShareCard}.dc.html`, `design/canvas.json`
 
+## Session 3
+
+### Phase 6: 비주얼 ✅
+
+**작업 내역**:
+
+1. 이미지 생성 모델로 타입별 블라인드 박스 피규어 5장 (프롬프트는 `findings.md`)
+2. 생성 CDN 이 프록시에 막혀 샌드박스에서 640px WebP 로 축소·base64 로 받아 복원, 체크섬 5장 일치
+3. 랜딩(피규어 라인업), 결과·공유받은 카드(캐릭터 300px), 저장 카드(560px), OG(520px, 기본 OG 는 5장 나열)에 적용
+4. 타입 색을 이미지 배경 샘플값으로 교체, 빌드·검증·브라우저 재구동 통과
+5. 디자인 캔버스 아트보드에 이미지 반영
+
+**생성/수정 파일**:
+
+- `assets/{prototyper,builder,sweeper,grower,maintainer}.webp`
+- `data.js`(색), `app.js`, `style.css`, `scripts/build.mjs`, `scripts/check.mjs`, `og/*.png`
+- `design/*.dc.html`, `design/canvas.json`, 문서 5종
+
 ## Test Results
 
 | Test | Input | Expected | Actual | Status |
@@ -82,6 +100,7 @@
 | 콜드 리드 | 세션 밖 리뷰어가 README·DESIGN·CLAUDE·data·app 정독 | 막히는 곳 없음 | minor gaps → 반영 (`findings.md` Learnings) | ✅ |
 | 사실 확인 | `factchk` 양방향 | 모든 주장에 출처 | 문항 수 근거 3건 수정, 나머지 확인됨 | ✅ |
 | 문항 어휘 중립화 후 | `npm run check` + 브라우저 재구동 | 균형 6/6, 분포 유지, 플로우 정상 | 통과 | ✅ |
+| 캐릭터 아트 적용 후 | 빌드·check·브라우저 재구동, 스크린샷 육안 | 카드·OG·저장 이미지에 캐릭터, 배경색 이어짐 | 통과 | ✅ |
 
 ## Error Log
 
@@ -94,7 +113,7 @@
 
 | Question | Answer |
 |---|---|
-| 1. 현재 어느 단계인가? | Phase 5: Delivery — 점검 반영분 푸시됨, 배포와 실측은 사람 몫 |
+| 1. 현재 어느 단계인가? | Phase 5: Delivery — 비주얼(Phase 6)까지 푸시됨, 배포와 실측은 사람 몫 |
 | 2. 다음에 할 일은? | 25명 실측(첫 번째 못) → GitHub Pages 켜기 → Threads 미리보기 확인 → 디자인 캔버스에서 다듬은 것을 `style.css`·`data.js` 로 반영 |
 | 3. 목표는? | Threads 에서 퍼지는 1분짜리 AX 타입 테스트 |
 | 4. 지금까지 배운 것? | `findings.md` Learnings |

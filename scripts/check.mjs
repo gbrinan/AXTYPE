@@ -70,6 +70,7 @@ for (const t of TYPES) {
     if (!html.includes(needle)) fail(`r/${t.id}/index.html 이 data.js 와 어긋남: '${needle}' 없음 — npm run build`);
   }
   if (!existsSync(resolve(root, 'og', `${t.id}.png`))) fail(`og/${t.id}.png 없음 — npm run build`);
+  if (!existsSync(resolve(root, 'assets', `${t.id}.webp`))) fail(`assets/${t.id}.webp 없음 — 타입별 캐릭터 아트 (findings.md 의 생성 프롬프트로 다시 만든다)`);
 }
 if (!existsSync(resolve(root, 'og', 'default.png'))) fail('og/default.png 없음 — npm run build');
 const indexHtml = readFileSync(resolve(root, 'index.html'), 'utf8');

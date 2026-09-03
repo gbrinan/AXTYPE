@@ -17,13 +17,14 @@ export const SITE = {
 };
 
 // 순서는 제품 수명주기 순: 아이디어 → 출시 → 정리 → 성장 → 운영.
+// color 는 assets/<id>.webp 의 배경색과 같아야 카드와 캐릭터가 한 장처럼 보인다. 아트를 다시 만들면 여기도 맞춘다.
 export const TYPES = [
   {
     id: 'prototyper',
     en: 'Prototyper',
     ko: '프로토타이퍼',
     emoji: '💡',
-    color: '#F5B301',
+    color: '#DF950D',
     ink: '#1a1200',
     headline: '아이디어를 찍어내는 사람',
     tagline: '당신에게 가장 비싼 건 시간이 아니라, 시도하지 않은 아이디어입니다.',
@@ -44,7 +45,7 @@ export const TYPES = [
     en: 'Builder',
     ko: '빌더',
     emoji: '🚀',
-    color: '#2F6BFF',
+    color: '#306EFE',
     ink: '#ffffff',
     headline: '아이디어를 진짜로 만드는 사람',
     tagline: '프로토타입과 제품 사이의 거리를 당신이 가장 빨리 지웁니다.',
@@ -65,7 +66,7 @@ export const TYPES = [
     en: 'Sweeper',
     ko: '스위퍼',
     emoji: '🧹',
-    color: '#16A34A',
+    color: '#1E994F',
     ink: '#ffffff',
     headline: '덜어내서 좋아지게 만드는 사람',
     tagline: '당신에게 최고의 결과물은 더한 것보다 뺀 것이 많은 결과물입니다.',
@@ -86,7 +87,7 @@ export const TYPES = [
     en: 'Grower',
     ko: '그로워',
     emoji: '📈',
-    color: '#E5397B',
+    color: '#EE447C',
     ink: '#ffffff',
     headline: '만든 걸 사랑받게 만드는 사람',
     tagline: '출시는 끝이 아니라, 당신의 시작입니다.',
@@ -107,7 +108,7 @@ export const TYPES = [
     en: 'Maintainer',
     ko: '메인테이너',
     emoji: '🛠️',
-    color: '#6B4EFF',
+    color: '#715FF9',
     ink: '#ffffff',
     headline: '무너지지 않게 지키는 사람',
     tagline: '아무 일도 안 일어난 하루가, 당신이 가장 잘한 날입니다.',

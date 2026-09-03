@@ -1,6 +1,6 @@
 // data.js 에서 r/<type>/index.html (OG 태그 페이지) 과 og/<type>.png 를 생성한다.
 // 실행: npm run build  — 생성물은 손으로 고치지 않는다. 항상 data.js 를 고치고 다시 만든다.
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -9,6 +9,11 @@ import { SITE, TYPES } from '../data.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// 타입별 캐릭터 아트 (assets/<id>.webp). 없으면 이모지로 대신한다.
+const art = (id) => {
+  const p = join(root, 'assets', `${id}.webp`);
+  return existsSync(p) ? `data:image/webp;base64,${readFileSync(p).toString('base64')}` : null;
+};
 
 /* 1. r/<type>/index.html — 크롤러가 읽는 OG 태그 + 사람은 본편으로 이동 */
 for (const t of TYPES) {
@@ -44,7 +49,12 @@ for (const t of TYPES) {
 }
 
 /* 2. og/<type>.png — 1200×630 */
-function ogHtml({ color, ink, emoji, ko, en, headline, label, cta, emojiSize = 260, stacked = false }) {
+function ogHtml({ color, ink, emoji, ko, en, headline, label, cta, emojiSize = 260, stacked = false, image = null, images = null }) {
+  const visual = image
+    ? `<img class="art" src="${image}" alt="">`
+    : images
+      ? `<div class="row">${images.map((s) => `<img class="mini" src="${s}" alt="">`).join('')}</div>`
+      : `<div class="emoji">${emoji}</div>`;
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
@@ -58,6 +68,9 @@ function ogHtml({ color, ink, emoji, ko, en, headline, label, cta, emojiSize = 2
   .cta{font-size:26px;font-weight:700;opacity:.8;margin-top:28px}
   .emoji{font-size:${emojiSize}px;line-height:1;flex-shrink:0;letter-spacing:.06em}
   .name small{display:block;margin:6px 0 0}
+  .art{width:520px;height:520px;border-radius:40px;flex-shrink:0;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+  .row{display:flex;gap:18px}
+  .mini{width:190px;height:190px;border-radius:28px;box-shadow:0 16px 32px rgba(0,0,0,.35)}
 </style></head><body>
 <div class="l">
   <div class="label">${esc(label)}</div>
@@ -65,7 +78,7 @@ function ogHtml({ color, ink, emoji, ko, en, headline, label, cta, emojiSize = 2
   <div class="headline">${esc(headline)}</div>
   <div class="cta">${esc(cta)}</div>
 </div>
-<div class="emoji">${emoji}</div>
+${visual}
 </body></html>`;
 }
 
@@ -84,10 +97,10 @@ if (!pw) {
 
 const cta = `${SITE.tagline} ${SITE.length}`;
 const cards = [
-  ...TYPES.map((t) => ({ file: t.id, label: '나의 AX 타입', cta, ...t })),
+  ...TYPES.map((t) => ({ file: t.id, label: '나의 AX 타입', cta, image: art(t.id), ...t })),
   {
     file: 'default', label: 'AX = AI Transformation', color: '#16161a', ink: '#ffffff',
-    emoji: TYPES.map((t) => t.emoji).join(''), emojiSize: 104, stacked: true,
+    emoji: TYPES.map((t) => t.emoji).join(''), emojiSize: 104, stacked: true, images: TYPES.map((t) => art(t.id)).filter(Boolean),
     ko: SITE.name, en: '', headline: TYPES.map((t) => t.ko).join(' · ') + ' 중 나는?', cta,
   },
 ];

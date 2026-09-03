@@ -6,7 +6,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 
 ## Current Phase
 
-🔄 Phase 5: Delivery
+🔄 Phase 5: Delivery (Phase 6 비주얼 완료)
 
 ## Phases
 
@@ -46,6 +46,13 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 - [ ] GitHub Pages 켜기 (사람이 해야 함: Settings → Pages)
 - [ ] 실제 Threads 에 링크 올려 미리보기 확인 (사람이 해야 함)
 - [ ] **첫 번째 못**: 25명(개발 12·비개발 13) 실측 — 못 고르는 문항 표시, 24시간 내 실제 게시 수 (`findings.md` hate 절). 게시 5명 미만이면 문구·타입 축 재설계, 마찰 제거 공수 중단
+
+### Phase 6: 비주얼 (블라인드 박스 피규어) ✅
+
+- [x] 타입별 3D 캐릭터 5장 생성, `assets/` 에 640px WebP
+- [x] 랜딩 라인업, 결과·공유받은 카드, 저장 카드, OG 이미지에 적용
+- [x] 타입 색을 이미지 배경색에 맞춤
+- [x] 디자인 캔버스 아트보드에 반영
 
 ## Key Questions
 

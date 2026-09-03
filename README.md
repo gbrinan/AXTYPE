@@ -34,6 +34,7 @@ scoring.js     채점과 동점 규칙. 브라우저와 검증 스크립트가 �
 index.html     한 페이지. 랜딩 → 문항 → 결과. 공유 링크로 들어오면(?r=<type>) 그 타입 설명과 "나도 테스트하기"부터 보여준다.
 app.js         화면 렌더링, 공유(Threads/X/복사), 결과 카드 이미지 저장.
 style.css
+assets/<type>.webp  타입별 3D 캐릭터 아트 640×640. 생성 프롬프트는 findings.md 에.
 r/<type>/      공유 링크가 가리키는 곳. OG 태그만 들고 본편으로 보낸다. (생성물)
 og/<type>.png  링크 미리보기 이미지 1200×630. (생성물)
 scripts/       build.mjs (생성), check.mjs (검증)
@@ -42,6 +43,8 @@ design/        Claude Design 캔버스 원본(아트보드 6장 + canvas.json). 
 ```
 
 `r/` 와 `og/` 는 손으로 고치지 않는다. `data.js` 를 고치고 `npm run build`.
+
+`assets/` 의 캐릭터는 이미지 생성 모델로 만든 것이다. 다시 만들면 `data.js` 의 타입 색을 새 이미지의 배경색에 맞춘다. 카드와 캐릭터가 한 장처럼 이어져야 하기 때문이다.
 
 `design/` 은 시각 작업을 Claude Design 에서 이어가기 위한 사본이다. 거기서 정한 색·간격·문구는 `style.css` 와 `data.js` 로 되돌려 넣어야 배포된다.
 

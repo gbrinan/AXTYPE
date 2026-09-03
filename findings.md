@@ -65,6 +65,19 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 | detool | 설계 문서는 메커니즘으로 쓰고, 배포 안내(runbook)만 도구 이름을 쓴다 |
 | re0 | 문서는 패치가 아니라 깨끗한 v0 로 다시 쓴다 |
 
+### 캐릭터 아트 (이미지 생성)
+
+이미지 생성 모델(Higgsfield 경유 `nano_banana_pro`, 2k, 1:1)로 타입별 피규어 다섯 장을 만들었다. 공통 프롬프트 뼈대:
+
+> Glossy 3D chibi blind-box collectible vinyl figurine, big round head, tiny body, smooth PVC material with soft specular highlights, soft studio lighting, centered full body, designer art toy aesthetic trending on Douyin, high detail 3D render, no text, no watermark. Character: <타입 설명>. Background: flat solid <타입 색>, nothing else.
+
+타입별 설명: 프로토타이퍼 = 전구 달린 노란 후드, 고글, 만들다 만 장치 셋을 저글링 / 빌더 = 흰 안전모, 로켓 제트팩, 체크 표시 태블릿 / 스위퍼 = 흰·민트 옷, 큰 빗자루, 회색 큐브가 반짝이로 쓸려 나감 / 그로워 = 물뿌리개, 잎이 상승 막대그래프인 화분, 하트 꽃 / 메인테이너 = 헤드셋, 유틸리티 조끼, 어깨에 렌치, 방패 배지.
+
+- 결과 원본은 2048×2048 PNG. 저장소에는 640×640 WebP(각 12~19KB)만 둔다. 웹·OG·저장 카드 모두 이 크기로 충분하다
+- `data.js` 의 타입 색은 생성된 이미지의 배경색을 모서리에서 샘플링한 값이다 (프롬프트의 색과 몇 단계 다르게 나온다). 카드와 이미지가 한 장으로 이어지려면 이미지 쪽에 맞춰야 한다
+- 다섯 캐릭터가 한 줄로 선 라인업 이미지도 만들었지만 쓰지 않았다. 다섯 장을 CSS 로 나란히 놓으면 같은 효과이고, 한 캐릭터를 바꿔도 라인업을 다시 만들 필요가 없다 (SSOT)
+- 이 환경에서는 생성 결과 CDN 이 프록시에 막혀 있어, 생성 서비스의 샌드박스에서 축소·인코딩한 텍스트를 받아 파일로 복원했다. 체크섬으로 다섯 장 모두 원본과 일치함을 확인했다
+
 ## Technical Decisions
 
 | Decision | Rationale |
@@ -74,6 +87,7 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 | `og/*.png` 를 Playwright 로 렌더해 커밋 | 서버리스 이미지 생성 없이 정적 호스팅만으로 미리보기 |
 | 채점 +2/+1, 동점 규칙은 `docs/DESIGN.md` 채점 절이 원본 | 결정적이고 설명 가능. 같은 답이면 항상 같은 결과 |
 | 결과 카드 1080×1350 캔버스 | Threads 피드에서 가장 큰 4:5 |
+| 타입별 3D 피규어 아트, 이모지는 보조 | 중국 숏폼의 아트토이 문법. 피드 점유·수집 욕구·굿즈 감각 (`docs/DESIGN.md` 비주얼 절) |
 | 공유 URL 은 런타임 `location` 기준, OG 는 빌드 시 `SITE.url` 기준 | 어느 호스트에서도 동작하면서 크롤러엔 절대 경로 |
 
 ## 기각한 대안 (지우지 않음)
@@ -89,6 +103,8 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 | 분석 스크립트(GA 등) 기본 탑재 | 필요해지면 그때 한 줄. 지금은 의존성 0 |
 | 5×5 = 25 조합 타입 (메인×서브를 하나의 타입으로) | OG 이미지 25장, 문구 25벌. 카드 5장 + 서브 표기로 같은 효과 |
 | 한글 번역 타입명 (발명가·건축가·정리자…) | 원문과 연결이 끊긴다. 음차 + 영문 병기 |
+| 다섯 캐릭터 라인업 이미지 한 장 | 캐릭터 하나만 바꿔도 다시 만들어야 한다. 다섯 장을 CSS 로 놓는 쪽이 SSOT |
+| 캐릭터를 투명 배경으로 잘라내기 | 배경색을 카드 색과 맞추면 잘라낼 필요가 없고, 광택 그림자가 그대로 살아 더 굿즈처럼 보인다 |
 
 ## Issues Encountered
 

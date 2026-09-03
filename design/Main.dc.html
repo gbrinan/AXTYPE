@@ -18,7 +18,7 @@
 
   <section style="border-radius: 18px; padding: 28px 24px 24px; background: {{accent}}; color: #1a1200; display: flex; flex-direction: column; gap: 6px;">
     <p style="font-size: 13px; font-weight: 700; opacity: 0.85;">나의 AX 타입</p>
-    <div style="font-size: 64px; line-height: 1; margin: 6px 0 4px;">💡</div>
+    <img src="prototyper.webp" alt="프로토타이퍼 피규어" style="width: 100%; max-width: 300px; aspect-ratio: 1; align-self: center; border-radius: 20px; display: block; margin: 4px 0 10px;">
     <h1 style="font-size: 34px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.25;">프로토타이퍼<span style="font-size: 16px; font-weight: 700; opacity: 0.8; margin-left: 6px;">Prototyper</span></h1>
     <p style="font-size: 20px; font-weight: 700; line-height: 1.25;">아이디어를 찍어내는 사람</p>
     <p style="font-size: 15px; opacity: 0.92; margin-top: 8px; word-break: keep-all;">당신에게 가장 비싼 건 시간이 아니라, 시도하지 않은 아이디어입니다.</p>
@@ -79,22 +79,22 @@
       </div>
       <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
         <span>📈 그로워</span>
-        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 20%; background: #E5397B; border-radius: 999px;"></div></div>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 20%; background: #EE447C; border-radius: 999px;"></div></div>
         <span style="text-align: right; color: #6b6b76; font-weight: 500;">20%</span>
       </div>
       <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
         <span>🚀 빌더</span>
-        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 17%; background: #2F6BFF; border-radius: 999px;"></div></div>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 17%; background: #306EFE; border-radius: 999px;"></div></div>
         <span style="text-align: right; color: #6b6b76; font-weight: 500;">17%</span>
       </div>
       <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
         <span>🧹 스위퍼</span>
-        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 13%; background: #16A34A; border-radius: 999px;"></div></div>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 13%; background: #1E994F; border-radius: 999px;"></div></div>
         <span style="text-align: right; color: #6b6b76; font-weight: 500;">13%</span>
       </div>
       <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
         <span>🛠️ 메인테이너</span>
-        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 3%; background: #6B4EFF; border-radius: 999px;"></div></div>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 3%; background: #715FF9; border-radius: 999px;"></div></div>
         <span style="text-align: right; color: #6b6b76; font-weight: 500;">3%</span>
       </div>
     </div>
@@ -105,10 +105,10 @@
   <p style="font-size: 12px; color: #6b6b76;">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="#">Boris Cherny, X (2026-06)</a></p>
 </div>
 </x-dc>
-<script data-dc-script data-props='{"accent":{"editor":"color","default":"#F5B301","options":["#F5B301","#2F6BFF","#16A34A","#E5397B","#6B4EFF"],"section":"타입 색"},"$preview":{"width":390,"height":1960}}'>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#DF950D","options":["#DF950D","#306EFE","#1E994F","#EE447C","#715FF9"],"section":"타입 색"},"$preview":{"width":390,"height":1960}}'>
 class Component extends DCLogic {
   renderVals() {
-    return { accent: this.props.accent ?? '#F5B301' };
+    return { accent: this.props.accent ?? '#DF950D' };
   }
 }
 </script>

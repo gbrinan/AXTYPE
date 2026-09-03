@@ -8,6 +8,7 @@ const typeOf = (id) => (Object.hasOwn(byId, id) ? byId[id] : null);
 // 배포 경로에 상관없이 동작하도록 현재 주소에서 기준 경로를 얻는다. (예: https://host/AXTYPE/)
 const BASE = location.origin + location.pathname.replace(/[^/]*$/, '');
 const resultUrl = (id) => `${BASE}r/${id}/`;
+const artUrl = (id) => `assets/${id}.webp`; // 타입별 캐릭터. 파일명은 타입 id 로 정해진다
 
 const state = { answers: [] };
 
@@ -37,8 +38,8 @@ function landing() {
       <h1>${esc(SITE.name)}</h1>
       <p class="lead">${esc(SITE.tagline)}</p>
       <p class="desc">${esc(SITE.description)}</p>
-      <div class="chips">
-        ${TYPES.map((t) => `<span class="chip">${t.emoji} ${esc(t.ko)}</span>`).join('')}
+      <div class="lineup">
+        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어" loading="lazy"><figcaption>${t.emoji} ${esc(t.ko)}</figcaption></figure>`).join('')}
       </div>
       <button class="btn" id="start">테스트 시작 →</button>
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
@@ -81,7 +82,7 @@ function typeCard(t, { label, sub } = {}) {
   return `
     <section class="result-card" data-ink="${dark ? 'dark' : 'light'}" style="--type-color:${t.color};--type-ink:${t.ink}">
       <p class="label">${esc(label)}</p>
-      <div class="emoji">${t.emoji}</div>
+      <img class="art" src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어">
       <h1 class="name">${esc(t.ko)}<small>${esc(t.en)}</small></h1>
       <p class="headline">${esc(t.headline)}</p>
       <p class="tagline">${esc(t.tagline)}</p>
@@ -177,7 +178,13 @@ function shared(t) {
 }
 
 /* ---------- 결과 카드 이미지 (1080×1350, 4:5) ---------- */
-function saveCard(main, sub) {
+function loadArt(id) {
+  return new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = artUrl(id); });
+}
+
+async function saveCard(main, sub) {
+  let art = null;
+  try { art = await loadArt(main.id); } catch { /* 아트가 없으면 이모지로 */ }
   const W = 1080, H = 1350;
   const c = document.createElement('canvas');
   c.width = W; c.height = H;
@@ -191,34 +198,39 @@ function saveCard(main, sub) {
   ctx.textAlign = 'center';
   ctx.font = font(700, 36);
   ctx.globalAlpha = .85;
-  ctx.fillText('나의 AX 타입', W / 2, 190);
+  ctx.fillText('나의 AX 타입', W / 2, 160);
   ctx.globalAlpha = 1;
 
-  ctx.font = font(400, 260);
-  ctx.fillText(main.emoji, W / 2, 520);
+  if (art) {
+    const size = 560;
+    ctx.drawImage(art, (W - size) / 2, 230, size, size);
+  } else {
+    ctx.font = font(400, 260);
+    ctx.fillText(main.emoji, W / 2, 520);
+  }
 
   ctx.font = font(900, 104);
-  ctx.fillText(main.ko, W / 2, 690);
+  ctx.fillText(main.ko, W / 2, 900);
   ctx.font = font(700, 40);
   ctx.globalAlpha = .8;
-  ctx.fillText(main.en, W / 2, 750);
+  ctx.fillText(main.en, W / 2, 960);
   ctx.globalAlpha = 1;
 
   ctx.font = font(700, 54);
-  ctx.fillText(main.headline, W / 2, 870);
+  ctx.fillText(main.headline, W / 2, 1050);
 
   if (sub) {
     ctx.font = font(700, 36);
     ctx.globalAlpha = .9;
-    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.ko}`, W / 2, 960);
+    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.ko}`, W / 2, 1120);
     ctx.globalAlpha = 1;
   }
 
   ctx.font = font(700, 34);
   ctx.globalAlpha = .85;
-  ctx.fillText(SITE.tagline, W / 2, 1190);
+  ctx.fillText(SITE.tagline, W / 2, 1230);
   ctx.font = font(400, 30);
-  ctx.fillText(BASE.replace(/^https?:\/\//, '').replace(/\/$/, ''), W / 2, 1250);
+  ctx.fillText(BASE.replace(/^https?:\/\//, '').replace(/\/$/, ''), W / 2, 1285);
   ctx.globalAlpha = 1;
 
   c.toBlob((blob) => {
