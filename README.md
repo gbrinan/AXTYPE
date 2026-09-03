@@ -1,6 +1,6 @@
 # AX 타입 테스트
 
-**AI 시대, 당신은 어떤 일꾼입니까?** 10문항, 1분. 결과는 다섯 타입 중 하나.
+**AI 시대, 당신은 어떤 일꾼입니까?** 10문항, 1분. 결과는 다섯 타입 중 하나. AX 는 AI Transformation(AI 전환)의 국내 통용 약어다.
 
 | | 타입 | 한 줄 |
 |---|---|---|
@@ -38,9 +38,12 @@ r/<type>/      공유 링크가 가리키는 곳. OG 태그만 들고 본편으�
 og/<type>.png  링크 미리보기 이미지 1200×630. (생성물)
 scripts/       build.mjs (생성), check.mjs (검증)
 docs/DESIGN.md 왜 이렇게 설계했는지: 바이럴 루프, 문항 원칙, 채점, 정직성 게이트.
+design/        Claude Design 캔버스 원본(아트보드 6장 + canvas.json). 화면의 거울이지 원본이 아니다.
 ```
 
 `r/` 와 `og/` 는 손으로 고치지 않는다. `data.js` 를 고치고 `npm run build`.
+
+`design/` 은 시각 작업을 Claude Design 에서 이어가기 위한 사본이다. 거기서 정한 색·간격·문구는 `style.css` 와 `data.js` 로 되돌려 넣어야 배포된다.
 
 ## 배포
 

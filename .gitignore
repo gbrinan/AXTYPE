@@ -3,3 +3,6 @@ node_modules/
 # 로컬 작업 기록(paperthin 관례). 배포되지 않는다.
 .re0/
 *.local.md
+# 디자인 캔버스 조립 결과물(2MB+). design/*.dc.html 과 canvas.json 만 원본으로 둔다.
+design/*.html
+!design/*.dc.html

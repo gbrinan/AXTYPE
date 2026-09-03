@@ -74,6 +74,10 @@ for (const t of TYPES) {
 if (!existsSync(resolve(root, 'og', 'default.png'))) fail('og/default.png 없음 — npm run build');
 const indexHtml = readFileSync(resolve(root, 'index.html'), 'utf8');
 if (!indexHtml.includes(`${SITE.url}/og/default.png`)) fail('index.html 의 og:image 가 data.js 의 SITE.url 과 다름');
+if (!indexHtml.includes(SITE.description)) fail('index.html 의 description 이 data.js 의 SITE.description 과 다름');
+if (!indexHtml.includes(SITE.length)) fail('index.html 의 og:description 에 SITE.length 가 없음');
+const readme = readFileSync(resolve(root, 'README.md'), 'utf8');
+for (const t of TYPES) if (!readme.includes(t.headline)) fail(`README 타입 표가 data.js 와 어긋남: '${t.headline}' 없음`);
 
 /* 보고 */
 console.log('타입별 등장 횟수 (primary / secondary):');

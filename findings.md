@@ -36,19 +36,19 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 - 공유 버튼은 스크롤 없이, 공유 문구는 결과 이름으로 **미리 채워서**
 - 세 가지 정체성 훅: 열망(그 결과이고 싶다) · 인정(나를 알아봤다) · 소속(같은 결과인 사람을 찾고 싶다). 강한 퀴즈는 둘 이상을 친다
 - 긍정적이고 칭찬하는 문구, 눈에 띄는 공유용 이미지
-- 문항 수: 7~12 가 권장 범위. 한 자료는 8문항 완주 68% vs 12문항 42% 를 인용. 6~8 이 완주를 최대화한다는 자료도 있음. 반면 심리측정 신뢰도엔 20~60 문항이 필요 → 이 테스트는 재미용임을 명시
-- BuzzFeed 퀴즈 트래픽의 75% 이상이 소셜 공유에서 온다는 인용
-- 국내 유형 테스트 사례: 3축 × 3문항 = 9문항 구조가 흔함. "케이크로 알아보는 성격 유형" 33만 플레이·11만 공유 사례
+- 문항 수: 자료마다 다르다. Outgrow 는 7문항 부근을 정점으로 보고 8문항을 넘기면 문항당 완주율이 약 15% 씩 떨어진다고 본다. Interact 는 성격 유형 퀴즈에 13문항을 권한다. 10 은 그 사이. 표준 성격검사는 대개 수십 문항 규모(HEXACO 60·100문항판 등)이고 문항이 늘수록 신뢰도가 오르는 건 고전검사이론의 기본 → 이 테스트는 재미용임을 명시
+- BuzzFeed 퀴즈 트래픽의 75% 이상이 소셜 공유에서 온다는 인용 (2014년경 Mashable 수치의 2차 인용)
+- 국내 유형 테스트 가이드는 12문항 안팎, MBTI 형은 4축 × 5문항 = 20문항을 예로 든다. "케이크로 알아보는 성격 유형" 33만 플레이·11만 공유 사례
 
-출처: https://woobox.com/articles/quiz-result-page-best-practices , https://woobox.com/articles/viral-quiz-mechanics , https://outgrow.co/blog/viral-quiz-copywriting-tactics-that-work , https://help.tryinteract.com/en/articles/10752954-how-many-questions-should-my-quiz-have-to-maximize-conversions , https://jobcannon.io/answers/how-many-questions-personality-test , https://www.i-boss.co.kr/ab-6141-57536 , https://brunch.co.kr/@theciriz/13
+출처: https://woobox.com/articles/quiz-result-page-best-practices , https://woobox.com/articles/viral-quiz-mechanics , https://outgrow.co/blog/quiz-engagement-benchmarks-completion-rates , https://help.tryinteract.com/en/articles/10752954-how-many-questions-should-my-quiz-have-to-maximize-conversions , https://www.socialmediatoday.com/social-business/how-use-buzzfeed-style-quizzes-social-media-marketing , https://guide.metavv.com/studio-guide/case/basic , https://brunch.co.kr/@theciriz/13
 
 ### Threads 공유
 
-- 웹 인텐트: `https://www.threads.com/intent/post?text=<URL 인코딩 문자열>`. Threads 엔지니어가 직접 공지. `url` 파라미터도 언급되나 본문에 링크를 넣는 쪽이 확실
-- 인텐트로 이미지는 못 붙인다. 이미지는 사용자가 저장해서 직접 올려야 함 → "카드 저장" 버튼
+- 웹 인텐트: `https://www.threads.com/intent/post?text=<URL 인코딩 문자열>`. Meta 공식 문서에 `text` 와 `url`(링크 첨부 전용) 두 파라미터가 있고, 본문에 링크를 넣는 예시도 공식 문서에 있다. 이 프로젝트는 후자. 공식 문서 표기는 `threads.net` 이지만 도메인은 `threads.com` 으로 옮겨 정착했다
+- 인텐트로 이미지는 못 붙인다. 이미지는 사용자가 저장해서 직접 올려야 함 → "이미지로 저장" 버튼. 이미지·동영상을 같이 올리면 링크 미리보기는 붙지 않는다
 - 링크 미리보기는 OG 태그를 읽는다. 크롤러는 JS 를 실행하지 않으므로 타입별 정적 HTML 이 필요
 
-출처: https://www.threads.com/@0xjessel/post/C2isZ9eP-yB , https://werd.io/seeking-share-urls-for-every-platform/
+출처: https://developers.facebook.com/docs/threads/threads-web-intents/ , https://www.threads.com/@0xjessel/post/C2isZ9eP-yB , https://opengraphplus.com/consumers/threads/crawling
 
 ### paperthin 에서 가져온 것
 
@@ -72,7 +72,7 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 | ES 모듈 정적 파일 (`index.html` + `app.js` + `data.js` + `scoring.js`) | 빌드 없이 브라우저와 Node 가 같은 데이터·채점 코드를 import |
 | `r/<type>/index.html` 정적 생성 | 타입별 OG 미리보기. 크롤러용 |
 | `og/*.png` 를 Playwright 로 렌더해 커밋 | 서버리스 이미지 생성 없이 정적 호스팅만으로 미리보기 |
-| 채점 +2/+1, 동점은 총점 → primary 횟수 → 마지막 primary 문항 → 수명주기 순 | 결정적이고 설명 가능. 마지막 문항이 열망 문항이라 동점에서 열망이 이김 |
+| 채점 +2/+1, 동점 규칙은 `docs/DESIGN.md` 채점 절이 원본 | 결정적이고 설명 가능. 같은 답이면 항상 같은 결과 |
 | 결과 카드 1080×1350 캔버스 | Threads 피드에서 가장 큰 4:5 |
 | 공유 URL 은 런타임 `location` 기준, OG 는 빌드 시 `SITE.url` 기준 | 어느 호스트에서도 동작하면서 크롤러엔 절대 경로 |
 
@@ -120,6 +120,10 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 
 전수 조합(59,049)에서 메인 타입 분포는 18.9% ~ 21.0%. 균형 배분만으로도 거의 고르다. 동점 규칙이 특정 타입에 유리하게 기울지 않았다는 뜻.
 
+### `factchk` 가 잡은 것 (양방향 사실 확인)
+
+아키타입 다섯 정의·부연·저자·게시 시점, Threads 인텐트 라우트, 크롤러가 JS 를 안 돌린다는 것, 4:5 카드, 케이크 테스트 수치는 모두 출처로 확인됐다. 틀린 것은 문항 수 근거 세 문장이었다. "8문항 68% vs 12문항 42%" 는 어떤 출처에서도 못 찾았고(스스로 세운 "근거 없는 통계 금지" 게이트 위반), "7~12 권장"과 "12 넘기면 완주 하락"은 인용한 자료가 실제로는 13문항을 권하거나 변곡점을 7~8 로 보고 있었으며, "국내 3축×3문항" 은 인용한 글이 12·20문항을 말하고 있었다. 세 문장 모두 출처가 실제로 말하는 내용으로 고쳤다. 교훈: 검색 스니펫으로 쓴 수치는 원문을 못 열었으면 수치 없이 방향만 적는다.
+
 ### 콜드 리드가 잡은 것 (세션 밖 리뷰어)
 
 작성자는 못 보는 종류의 결함이 한 번의 콜드 리드에서 나왔다. 패턴별로:
@@ -131,3 +135,11 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 - **입력 경계.** `?r=constructor` 처럼 프로토타입 체인 이름이 타입으로 통과. → `Object.hasOwn` 으로 막음.
 
 기각한 지적: 브라우저 히스토리 연동(뒤로가기·새로고침 시 결과 유지)은 상태를 URL 에 싣는 설계 변경이라 이번 범위 밖. 필요해지면 `?a=<답 인코딩>` 으로 결과를 재현하는 방식이 SSOT 를 지킨다.
+
+### `hate` 가 잡은 것 (계획을 죽일 한 가지 반론)
+
+**root.** 설계 전체가 "정체성 한 줄이 떨어지면 사람들은 올린다"를 검증된 사실처럼 깔고, 그 아래 전부(OG, 인텐트, 카드, 배분 게이트)를 *올리기까지의 마찰 제거* 에만 쓴다. 완주 → 실제 게시 전환율은 가정이다. 그런데 문항과 결과 문구가 개발자 인그룹 어휘(PR, 코드베이스, 프로파일러, 에러율)로 차 있어, 팔로워가 섞인 한국 Threads 일반 피드에서는 인그룹 밖 독자에게 뜻이 안 통하고 게시의 사회적 보상이 음수가 되기 쉽다. "직군 무관"을 뼈대로 써놓고 구현이 그 반대였다. 게다가 분석을 뺐으므로 이 가정이 깨져도 관측되지 않는다.
+
+**first nail.** 코드를 더 쓰지 말고 하루 안에: 일·AI 이야기를 하는 한국 Threads 활성 계정 25명 안팎(개발 12, 비개발 지식노동자 13)에게 10문항과 결과 공유 문구를 그대로 보내고, (1) "내 경험으로 답을 못 고르는 문항"에 표시하게 하고, (2) 의향을 묻지 말고 **지금 본인 계정에 올려달라고 한 뒤 24시간 후 실제 게시 수를 센다**. 킬 기준: 실제 게시 5명 미만(≈20% 미만)이면 루프의 K 는 1 을 못 넘고 마찰 제거 공수는 매몰. 비개발 13명 중 과반이 2문항 이상 "못 고름"이면 "직군 중립"은 거짓이고 도달 모수는 한국 개발자 클러스터로 한 자릿수 줄어든다.
+
+**바로 고친 것.** 규칙 위반에 해당하는 부분은 문항·문구의 개발자 어휘를 누구나 고를 수 있는 장면으로 바꿨다 (PR → 작업, 코드베이스 → 제품, 프로파일러 → 어디서 느려지는지 잰다, 에러율 → 장애). primary/secondary 배분은 그대로라 균형 게이트는 유지된다. **결정은 사람 몫.** 첫 번째 못(25명 실측)은 코드 밖의 일이라 `tasks.md` 에 다음 단계로 올렸다. 게시율을 셀 방법이 없다는 지적은 맞다. 해시태그 수동 검색이 전부이고, 프리필 문구는 편집 가능해 링크가 떨어지면 계수에서 빠진다. 분석을 넣을지는 실측 뒤에 정한다.

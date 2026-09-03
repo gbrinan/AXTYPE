@@ -33,7 +33,7 @@ function landing() {
   document.title = SITE.name;
   render(`
     <section class="screen hero">
-      <p class="kicker">AX = AI Transformation</p>
+      <p class="kicker">AX = AI Transformation, AI 전환</p>
       <h1>${esc(SITE.name)}</h1>
       <p class="lead">${esc(SITE.tagline)}</p>
       <p class="desc">${esc(SITE.description)}</p>

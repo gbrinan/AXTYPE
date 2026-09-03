@@ -5,6 +5,7 @@
 export const SITE = {
   name: 'AX 타입 테스트',
   tagline: 'AI 시대, 당신은 어떤 일꾼입니까?',
+  length: '10문항, 1분',
   description: 'Claude Code를 만든 Boris Cherny가 말한 5가지 아키타입. 10문항, 1분.',
   // 배포 주소. r/<type>/ 의 OG 태그가 절대 경로로 이 값을 쓴다. 다른 곳에 배포하면 여기만 바꾼다.
   url: 'https://gbrinan.github.io/AXTYPE',
@@ -49,7 +50,7 @@ export const TYPES = [
     tagline: '프로토타입과 제품 사이의 거리를 당신이 가장 빨리 지웁니다.',
     traits: [
       '"언제 쓸 수 있어?"에 날짜로 답한다',
-      '데모와 프로덕션의 차이를 몸으로 안다. 에러 처리, 엣지 케이스, 배포',
+      '데모와 진짜 제품의 차이를 몸으로 안다. 예외, 실패, 출시',
       '말로 설명하느니 만들어서 보여준다',
     ],
     weapon:
@@ -67,18 +68,18 @@ export const TYPES = [
     color: '#16A34A',
     ink: '#ffffff',
     headline: '덜어내서 좋아지게 만드는 사람',
-    tagline: '당신에게 최고의 PR은 빨간 줄이 초록 줄보다 많은 PR입니다.',
+    tagline: '당신에게 최고의 결과물은 더한 것보다 뺀 것이 많은 결과물입니다.',
     traits: [
       '버튼 세 개를 보면 하나로 줄일 방법부터 떠오른다',
       '안 쓰는 기능을 없애는 게 새 기능을 붙이는 것보다 짜릿하다',
-      '느린 화면을 보면 프로파일러부터 켠다',
+      '느린 화면을 보면 어디서 느려지는지부터 잰다',
     ],
     weapon:
       '누구나 뭐든 만들 수 있는 시대엔 제품이 순식간에 비대해집니다. 당신은 팀의 면역 체계입니다. 지우는 사람이 있어야 제품이 삽니다.',
     shadow: "덜어내는 기준이 '내 취향'이 되지 않도록, 데이터와 사용자를 옆에 두세요.",
     best: { id: 'grower', why: '무엇을 남길지 데이터로 알려주는 사람' },
     clash: { id: 'builder', why: '그 사람이 붙이는 속도가 당신이 떼는 속도보다 빠르거든요' },
-    share: '빨간 줄이 초록 줄보다 많은 PR을 사랑하는 사람',
+    share: '더한 것보다 뺀 것이 많은 작업을 사랑하는 사람',
   },
   {
     id: 'grower',
@@ -132,7 +133,7 @@ export const QUESTIONS = [
     options: [
       { text: '"이런 거 되나?" 새 아이디어 3개 프로토타입 뽑기', primary: 'prototyper', secondary: 'builder' },
       { text: '지난주 프로토타입을 배포 가능한 상태로 정리하기', primary: 'builder', secondary: 'maintainer' },
-      { text: '주말 사이 쌓인 에러 로그와 알림 훑기', primary: 'maintainer', secondary: 'sweeper' },
+      { text: '주말 사이 쌓인 알림과 오류 훑기', primary: 'maintainer', secondary: 'sweeper' },
     ],
   },
   {
@@ -152,9 +153,9 @@ export const QUESTIONS = [
     ],
   },
   {
-    text: '코드베이스에서 오래된 기능을 발견했다. 아무도 안 쓰는 것 같다.',
+    text: '제품에서 오래된 기능을 발견했다. 아무도 안 쓰는 것 같다.',
     options: [
-      { text: '삭제 PR을 올린다. 줄어든 만큼 팀이 가벼워진다', primary: 'sweeper', secondary: 'maintainer' },
+      { text: '없애자고 바로 제안한다. 줄어든 만큼 팀이 가벼워진다', primary: 'sweeper', secondary: 'maintainer' },
       { text: '정말 안 쓰는지 사용 데이터부터 본다', primary: 'grower', secondary: 'sweeper' },
       { text: '의존하는 곳이 없는지 확인하고 제거 계획을 세운다', primary: 'maintainer', secondary: 'builder' },
     ],
@@ -171,16 +172,16 @@ export const QUESTIONS = [
     text: '출시 직후 일주일, 당신은 어디에 있나?',
     options: [
       { text: '유저 반응 보면서 다음 실험 돌리는 중', primary: 'grower', secondary: 'prototyper' },
-      { text: '대시보드 보면서 에러율과 응답 속도 지키는 중', primary: 'maintainer', secondary: 'grower' },
+      { text: '대시보드 보면서 장애와 속도 지키는 중', primary: 'maintainer', secondary: 'grower' },
       { text: '급하게 붙였던 것들 잘라내고 정리하는 중', primary: 'sweeper', secondary: 'builder' },
     ],
   },
   {
-    text: '가장 뿌듯했던 PR은?',
+    text: '가장 뿌듯했던 작업은?',
     options: [
-      { text: '새 기능 하나를 처음부터 끝까지 붙여서 그날 배포한 PR', primary: 'builder', secondary: 'prototyper' },
-      { text: '-1,500줄. 아무것도 안 깨지고 더 빨라진 PR', primary: 'sweeper', secondary: 'maintainer' },
-      { text: '3줄 바꿨는데 전환율이 오른 PR', primary: 'grower', secondary: 'prototyper' },
+      { text: '새 기능 하나를 처음부터 끝까지 만들어 그날 내보낸 것', primary: 'builder', secondary: 'prototyper' },
+      { text: '잔뜩 덜어냈는데 아무것도 안 깨지고 더 빨라진 것', primary: 'sweeper', secondary: 'maintainer' },
+      { text: '작은 것 하나 바꿨는데 전환율이 오른 것', primary: 'grower', secondary: 'prototyper' },
     ],
   },
   {
@@ -218,6 +219,6 @@ export function shareText(main, sub, url) {
     `"${main.headline}"`,
   ];
   if (sub) lines.push(`서브 타입: ${sub.emoji} ${sub.ko}`);
-  lines.push('', `${SITE.tagline} (10문항, 1분)`, `${url} ${SITE.hashtag}`);
+  lines.push('', `${SITE.tagline} (${SITE.length})`, `${url} ${SITE.hashtag}`);
   return lines.join('\n');
 }

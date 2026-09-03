@@ -13,7 +13,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 /* 1. r/<type>/index.html — 크롤러가 읽는 OG 태그 + 사람은 본편으로 이동 */
 for (const t of TYPES) {
   const title = `나의 AX 타입: ${t.emoji} ${t.ko}`;
-  const desc = `"${t.headline}" · ${SITE.tagline} 10문항 1분.`;
+  const desc = `"${t.headline}" · ${SITE.tagline} ${SITE.length}.`;
   const html = `<!doctype html>
 <html lang="ko">
 <head>
@@ -82,7 +82,7 @@ if (!pw) {
   process.exit(1);
 }
 
-const cta = `${SITE.tagline} 10문항 1분`;
+const cta = `${SITE.tagline} ${SITE.length}`;
 const cards = [
   ...TYPES.map((t) => ({ file: t.id, label: '나의 AX 타입', cta, ...t })),
   {

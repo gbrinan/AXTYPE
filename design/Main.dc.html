@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; background: #f6f5f1; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif; color: #16161a; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    a { color: #16161a; } a:hover { color: #6b6b76; }
+    h1, h2, p, ul { margin: 0; }
+  </style>
+</helmet>
+<div style="width: 390px; min-height: 844px; background: #f6f5f1; padding: 24px 20px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
+
+  <section style="border-radius: 18px; padding: 28px 24px 24px; background: {{accent}}; color: #1a1200; display: flex; flex-direction: column; gap: 6px;">
+    <p style="font-size: 13px; font-weight: 700; opacity: 0.85;">나의 AX 타입</p>
+    <div style="font-size: 64px; line-height: 1; margin: 6px 0 4px;">💡</div>
+    <h1 style="font-size: 34px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.25;">프로토타이퍼<span style="font-size: 16px; font-weight: 700; opacity: 0.8; margin-left: 6px;">Prototyper</span></h1>
+    <p style="font-size: 20px; font-weight: 700; line-height: 1.25;">아이디어를 찍어내는 사람</p>
+    <p style="font-size: 15px; opacity: 0.92; margin-top: 8px; word-break: keep-all;">당신에게 가장 비싼 건 시간이 아니라, 시도하지 않은 아이디어입니다.</p>
+    <p style="margin-top: 14px; font-size: 14px; font-weight: 700; background: rgba(0,0,0,0.08); padding: 8px 12px; border-radius: 10px; align-self: flex-start;">서브 타입 · 📈 그로워</p>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 10px;">
+    <a href="#" style="display: flex; align-items: center; justify-content: center; padding: 16px 20px; border-radius: 14px; background: #000000; color: #ffffff; font-size: 17px; font-weight: 700; text-decoration: none;">Threads에 결과 올리기</a>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div style="display: flex; align-items: center; justify-content: center; padding: 16px 20px; border-radius: 14px; background: #ffffff; border: 1px solid #e6e4dd; font-size: 17px; font-weight: 700;">문구+링크 복사</div>
+      <div style="display: flex; align-items: center; justify-content: center; padding: 16px 20px; border-radius: 14px; background: #ffffff; border: 1px solid #e6e4dd; font-size: 17px; font-weight: 700;">이미지로 저장</div>
+    </div>
+    <a href="#" style="display: flex; align-items: center; justify-content: center; padding: 10px; color: #6b6b76; font-size: 17px; font-weight: 500; text-decoration: none;">X에 올리기</a>
+  </section>
+
+  <section style="background: #ffffff; border: 1px solid #e6e4dd; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;">
+    <h2 style="font-size: 15px; font-weight: 900; color: #6b6b76; line-height: 1.25;">동료가 알아보는 순간</h2>
+    <ul style="padding-left: 1.2em; font-size: 15px; word-break: keep-all; display: flex; flex-direction: column; gap: 6px;">
+      <li>회의 중에 이미 데모를 만들고 있다</li>
+      <li>"이거 되나?"가 입버릇. 되는지 보기 전엔 못 참는다</li>
+      <li>만든 것 대부분이 출시되지 않아도 괜찮다. 하나가 판을 바꾸니까</li>
+    </ul>
+  </section>
+
+  <section style="background: #ffffff; border: 1px solid #e6e4dd; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;">
+    <h2 style="font-size: 15px; font-weight: 900; color: #6b6b76; line-height: 1.25;">AI 시대, 당신의 무기</h2>
+    <p style="font-size: 15px; word-break: keep-all;">AI가 시도 비용을 크게 낮춘 지금, 아이디어의 수가 곧 실력입니다. 당신이 아이디어를 뽑는 속도가 팀이 탐색하는 범위를 정합니다.</p>
+  </section>
+
+  <section style="background: #ffffff; border: 1px solid #e6e4dd; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;">
+    <h2 style="font-size: 15px; font-weight: 900; color: #6b6b76; line-height: 1.25;">조심할 것</h2>
+    <p style="font-size: 15px; word-break: keep-all;">시작은 많고 끝은 적습니다. 열에 하나는 직접 출시까지 가져가 보세요.</p>
+  </section>
+
+  <section style="background: #ffffff; border: 1px solid #e6e4dd; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;">
+    <h2 style="font-size: 15px; font-weight: 900; color: #6b6b76; line-height: 1.25;">케미</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div style="background: #f6f5f1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 13px; color: #6b6b76; font-weight: 700;">최고의 짝</span>
+        <span style="font-size: 16px; font-weight: 700;">🚀 빌더</span>
+        <span style="font-size: 13px; color: #6b6b76; word-break: keep-all;">당신이 던진 공을 끝까지 들고 뛰어줄 사람</span>
+      </div>
+      <div style="background: #f6f5f1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 13px; color: #6b6b76; font-weight: 700;">부딪히지만 필요한 짝</span>
+        <span style="font-size: 16px; font-weight: 700;">🛠️ 메인테이너</span>
+        <span style="font-size: 13px; color: #6b6b76; word-break: keep-all;">당신이 열어둔 실험을 그 사람은 닫고 싶어 하거든요</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: #ffffff; border: 1px solid #e6e4dd; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;">
+    <h2 style="font-size: 15px; font-weight: 900; color: #6b6b76; line-height: 1.25;">내 안의 다섯 타입</h2>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
+        <span>💡 프로토타이퍼</span>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 47%; background: {{accent}}; border-radius: 999px;"></div></div>
+        <span style="text-align: right; color: #6b6b76; font-weight: 500;">47%</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
+        <span>📈 그로워</span>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 20%; background: #E5397B; border-radius: 999px;"></div></div>
+        <span style="text-align: right; color: #6b6b76; font-weight: 500;">20%</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
+        <span>🚀 빌더</span>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 17%; background: #2F6BFF; border-radius: 999px;"></div></div>
+        <span style="text-align: right; color: #6b6b76; font-weight: 500;">17%</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
+        <span>🧹 스위퍼</span>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 13%; background: #16A34A; border-radius: 999px;"></div></div>
+        <span style="text-align: right; color: #6b6b76; font-weight: 500;">13%</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 112px 1fr 36px; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;">
+        <span>🛠️ 메인테이너</span>
+        <div style="height: 8px; background: #f6f5f1; border-radius: 999px; overflow: hidden;"><div style="height: 8px; width: 3%; background: #6B4EFF; border-radius: 999px;"></div></div>
+        <span style="text-align: right; color: #6b6b76; font-weight: 500;">3%</span>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: #6b6b76;">내 답이 다섯 타입에 나뉜 비율입니다. 많은 사람이 두세 타입에 걸쳐 있으니 메인과 서브를 함께 보세요.</p>
+  </section>
+
+  <div style="display: flex; align-items: center; justify-content: center; padding: 16px 20px; border-radius: 14px; background: #ffffff; border: 1px solid #e6e4dd; font-size: 17px; font-weight: 700;">다시 하기</div>
+  <p style="font-size: 12px; color: #6b6b76;">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="#">Boris Cherny, X (2026-06)</a></p>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#F5B301","options":["#F5B301","#2F6BFF","#16A34A","#E5397B","#6B4EFF"],"section":"타입 색"},"$preview":{"width":390,"height":1960}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#F5B301' };
+  }
+}
+</script>
+</body>
+</html>
