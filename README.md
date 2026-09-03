@@ -1,0 +1,54 @@
+# AX 타입 테스트
+
+**AI 시대, 당신은 어떤 일꾼입니까?** 10문항, 1분. 결과는 다섯 타입 중 하나.
+
+| | 타입 | 한 줄 |
+|---|---|---|
+| 💡 | **프로토타이퍼** Prototyper | 아이디어를 찍어내는 사람 |
+| 🚀 | **빌더** Builder | 아이디어를 진짜로 만드는 사람 |
+| 🧹 | **스위퍼** Sweeper | 덜어내서 좋아지게 만드는 사람 |
+| 📈 | **그로워** Grower | 만든 걸 사랑받게 만드는 사람 |
+| 🛠️ | **메인테이너** Maintainer | 무너지지 않게 지키는 사람 |
+
+다섯 아키타입은 Claude Code를 만든 Boris Cherny가 [X에 올린 글](https://x.com/bcherny/status/2071379474277613732)에서 가져왔다. 직군이 아니라 **일하는 패턴**이고, 많은 사람이 두세 타입에 걸쳐 있다. 그래서 결과는 메인 타입과 서브 타입을 같이 보여준다.
+
+재미로 보는 테스트다. 심리검사가 아니다.
+
+## 실행
+
+사이트는 빌드 없이 정적 파일 그대로 돈다. ES 모듈을 쓰므로 `file://` 이 아니라 로컬 서버로 연다. `build` 는 생성물(공유용 OG 페이지와 이미지)을 다시 만들 때만 필요하다.
+
+```bash
+npm run dev        # http://localhost:3000
+npm run check      # 문항 균형·결과 분포·생성물 동기화 검증
+npm run build      # r/<type>/ 와 og/*.png 를 data.js 에서 다시 생성하고 check 실행 (Playwright 필요)
+```
+
+`build` 는 전역 또는 로컬에 설치된 `playwright` 를 찾아 쓴다. 없으면 `npm i -D playwright && npx playwright install chromium`.
+
+## 구조
+
+```
+data.js        타입·문항·공유 문구의 단일 진실 원천. 내용 수정은 여기서만.
+scoring.js     채점과 동점 규칙. 브라우저와 검증 스크립트가 같이 쓴다.
+index.html     한 페이지. 랜딩 → 문항 → 결과. 공유 링크로 들어오면(?r=<type>) 그 타입 설명과 "나도 테스트하기"부터 보여준다.
+app.js         화면 렌더링, 공유(Threads/X/복사), 결과 카드 이미지 저장.
+style.css
+r/<type>/      공유 링크가 가리키는 곳. OG 태그만 들고 본편으로 보낸다. (생성물)
+og/<type>.png  링크 미리보기 이미지 1200×630. (생성물)
+scripts/       build.mjs (생성), check.mjs (검증)
+docs/DESIGN.md 왜 이렇게 설계했는지: 바이럴 루프, 문항 원칙, 채점, 정직성 게이트.
+```
+
+`r/` 와 `og/` 는 손으로 고치지 않는다. `data.js` 를 고치고 `npm run build`.
+
+## 배포
+
+정적 호스팅 어디든 된다. 한 가지만 맞춘다: `data.js` 의 `SITE.url` 을 실제 배포 주소로, 끝 슬래시 없이. 공유 링크의 미리보기(OG 이미지)가 절대 경로로 이 값을 쓰기 때문이다. 바꾼 뒤 `npm run build` 로 생성물을 다시 만든다.
+
+GitHub Pages 라면 Settings → Pages → Branch `main`, 폴더 `/ (root)`.
+
+## 작업 방식
+
+- 계획·발견·진행은 [`tasks.md`](./tasks.md), [`findings.md`](./findings.md), [`progress.md`](./progress.md) 세 파일에 기록한다 ([File-based Planning Workflow](https://github.com/ahastudio/til/blob/main/ai/file-based-planning-workflow.md)).
+- 에이전트용 위생 스킬 [paperthin](https://github.com/LilMGenius/paperthin) 이 `.claude/skills/` 에 설치되어 있다. 설계 철학도 거기서 빌렸다: 만든 사람이 아니라 결과물을 믿을 것, 한 사실은 한 곳에, 더하기보다 덜어내기. 자세한 건 [`CLAUDE.md`](./CLAUDE.md).
