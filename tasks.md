@@ -6,7 +6,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 
 ## Current Phase
 
-🔄 Phase 5: Delivery (Phase 6 비주얼, Phase 7 MBTI·PWA 완료)
+🔄 Phase 5: Delivery (Phase 6 비주얼, Phase 7 MBTI·PWA 완료, Vercel 배포 연결됨)
 
 ## Phases
 
@@ -43,7 +43,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 
 - [x] README, CLAUDE.md
 - [x] 첫 커밋, `main` 푸시
-- [ ] GitHub Pages: PR 합치면 워크플로가 배포. 워크플로의 자동 켜기가 권한으로 실패하면 Settings → Pages → Source 를 GitHub Actions 로 (사람)
+- [x] 배포: Vercel 프로젝트 `axtype` 이 저장소에 연결됨. `main` 푸시마다 `https://axtype.vercel.app` 에 올라간다 (`vercel.json`: 빌드 없이 루트를 그대로 서빙)
 - [ ] 실제 Threads 에 링크 올려 미리보기 확인 (사람이 해야 함)
 - [ ] **첫 번째 못**: 25명(개발 12·비개발 13) 실측 — 못 고르는 문항 표시, 24시간 내 실제 게시 수 (`findings.md` hate 절). 게시 5명 미만이면 문구·타입 축 재설계, 마찰 제거 공수 중단
 
@@ -61,7 +61,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 - [x] index 와 r/ 페이지에 og:·twitter: 태그, 파비콘, 테마색, 애플 아이콘
 - [x] 매니페스트, 서비스 워커, 아이콘 5종 생성. check 가 목록·파일 대조
 
-### Phase 8: CI 와 배포 자동화 🔄
+
 
 - [x] `scripts/smoke.mjs`: 브라우저 한 바퀴를 단언으로
 - [x] `.github/workflows/ci.yml`: PR 마다 check + smoke, main 푸시에 Pages 배포
@@ -71,7 +71,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 
 0. 완주자가 실제로 올리는가? 설계 전체가 이 가정 위에 있다. 코드보다 먼저 25명 실측으로 확인한다.
 
-1. 배포 주소가 `https://gbrinan.github.io/AXTYPE` 이 맞나? 아니면 `data.js` 의 `SITE.url` 을 바꾸고 `npm run build`.
+1. 배포 주소는 Vercel 프로젝트 `axtype` 의 `https://axtype.vercel.app`. 주소가 바뀌면 `data.js` 의 `SITE.url` 을 바꾸고 `npm run build`.
 2. 다섯 타입 이름을 한글 음차(프로토타이퍼)로 갈지, 번역(발명가)로 갈지. 지금은 음차 + 영문 병기. 원문과의 연결이 보이는 쪽을 택했다.
 3. 결과 카드 이미지 비율: 4:5 (1080×1350) 로 갔다. Threads 피드에서 가장 크게 보이는 비율. 1:1 이 필요하면 `saveCard` 의 H 만 바꾸면 된다.
 

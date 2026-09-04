@@ -8,7 +8,7 @@ export const SITE = {
   length: '10문항, 1분',
   description: 'Claude Code를 만든 Boris Cherny가 말한 5가지 아키타입. 10문항, 1분.',
   // 배포 주소. r/<type>/ 의 OG 태그가 절대 경로로 이 값을 쓴다. 다른 곳에 배포하면 여기만 바꾼다.
-  url: 'https://gbrinan.github.io/AXTYPE',
+  url: 'https://axtype.vercel.app',
   hashtag: '#AX타입테스트',
   source: {
     label: 'Boris Cherny, X (2026-06)',
