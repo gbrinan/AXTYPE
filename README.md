@@ -2,13 +2,15 @@
 
 **AI 시대, 당신은 어떤 일꾼입니까?** 10문항, 1분. 결과는 다섯 타입 중 하나. AX 는 AI Transformation(AI 전환)의 국내 통용 약어다.
 
-| | 타입 | 한 줄 |
-|---|---|---|
-| 💡 | **프로토타이퍼** Prototyper | 아이디어를 찍어내는 사람 |
-| 🚀 | **빌더** Builder | 아이디어를 진짜로 만드는 사람 |
-| 🧹 | **스위퍼** Sweeper | 덜어내서 좋아지게 만드는 사람 |
-| 📈 | **그로워** Grower | 만든 걸 사랑받게 만드는 사람 |
-| 🛠️ | **메인테이너** Maintainer | 무너지지 않게 지키는 사람 |
+| 코드 | 타입 | 별명 | 한 줄 |
+|---|---|---|---|
+| PRTO | 💡 **프로토타이퍼** Prototyper | 발명가 | 아이디어를 찍어내는 사람 |
+| BLDR | 🚀 **빌더** Builder | 제작자 | 아이디어를 진짜로 만드는 사람 |
+| SWPR | 🧹 **스위퍼** Sweeper | 편집자 | 덜어내서 좋아지게 만드는 사람 |
+| GRWR | 📈 **그로워** Grower | 육성가 | 만든 걸 사랑받게 만드는 사람 |
+| MNTR | 🛠️ **메인테이너** Maintainer | 수호자 | 무너지지 않게 지키는 사람 |
+
+결과 코드는 `메인-서브첫글자` 꼴이다. `PRTO-G` 는 프로토타이퍼이면서 그로워 기질이 있는 사람.
 
 다섯 아키타입은 Claude Code를 만든 Boris Cherny가 [X에 올린 글](https://x.com/bcherny/status/2071379474277613732)에서 가져왔다. 직군이 아니라 **일하는 패턴**이고, 많은 사람이 두세 타입에 걸쳐 있다. 그래서 결과는 메인 타입과 서브 타입을 같이 보여준다.
 
@@ -31,7 +33,9 @@ npm run build      # r/<type>/ 와 og/*.png 를 data.js 에서 다시 생성하�
 ```
 data.js        타입·문항·공유 문구의 단일 진실 원천. 내용 수정은 여기서만.
 scoring.js     채점과 동점 규칙. 브라우저와 검증 스크립트가 같이 쓴다.
-index.html     한 페이지. 랜딩 → 문항 → 결과. 공유 링크로 들어오면(?r=<type>) 그 타입 설명과 "나도 테스트하기"부터 보여준다.
+index.html     한 페이지. 랜딩 → 문항 → 결과. 공유 링크로 들어오면(?r=<type>) 그 타입 설명과 "나도 테스트하기"부터 보여준다. 링크 미리보기 메타태그, 아이콘, PWA 링크가 head 에 있다.
+manifest.webmanifest, sw.js  홈 화면 설치와 오프라인용. 파일을 추가하면 sw.js 의 목록과 VERSION 을 갱신한다 (check 가 목록을 대조).
+icons/         favicon.svg 가 원본. PNG 들은 build 가 렌더한다. (생성물)
 app.js         화면 렌더링, 공유(Threads/X/복사), 결과 카드 이미지 저장.
 style.css
 assets/<type>.webp  타입별 3D 캐릭터 아트 640×640. 생성 프롬프트는 findings.md 에.
@@ -52,7 +56,7 @@ design/        Claude Design 캔버스 원본(아트보드 6장 + canvas.json). 
 
 정적 호스팅 어디든 된다. 한 가지만 맞춘다: `data.js` 의 `SITE.url` 을 실제 배포 주소로, 끝 슬래시 없이. 공유 링크의 미리보기(OG 이미지)가 절대 경로로 이 값을 쓰기 때문이다. 바꾼 뒤 `npm run build` 로 생성물을 다시 만든다.
 
-GitHub Pages 라면 Settings → Pages → Branch `main`, 폴더 `/ (root)`.
+GitHub Pages 라면 Settings → Pages → Branch `main`, 폴더 `/ (root)`. 서비스 워커는 HTTPS 에서만 등록되므로 로컬에서는 PWA 설치가 뜨지 않는다.
 
 ## 작업 방식
 

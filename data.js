@@ -17,12 +17,17 @@ export const SITE = {
 };
 
 // 순서는 제품 수명주기 순: 아이디어 → 출시 → 정리 → 성장 → 운영.
+// code 는 4글자 대문자, 첫 글자는 타입마다 달라야 한다. 결과 코드는 `<메인 code>-<서브 code 첫 글자>` (예: PRTO-G).
+// nick 은 MBTI 의 '중재자'처럼 두세 글자 별명, tags 는 해시태그처럼 붙는 키워드 셋.
 // color 는 assets/<id>.webp 의 배경색과 같아야 카드와 캐릭터가 한 장처럼 보인다. 아트를 다시 만들면 여기도 맞춘다.
 export const TYPES = [
   {
     id: 'prototyper',
     en: 'Prototyper',
     ko: '프로토타이퍼',
+    code: 'PRTO',
+    nick: '발명가',
+    tags: ['아이디어뱅크', '데모중독', '일단만들어봄'],
     emoji: '💡',
     color: '#DF950D',
     ink: '#1a1200',
@@ -44,6 +49,9 @@ export const TYPES = [
     id: 'builder',
     en: 'Builder',
     ko: '빌더',
+    code: 'BLDR',
+    nick: '제작자',
+    tags: ['출시본능', '끝까지간다', '날짜로답함'],
     emoji: '🚀',
     color: '#306EFE',
     ink: '#ffffff',
@@ -65,6 +73,9 @@ export const TYPES = [
     id: 'sweeper',
     en: 'Sweeper',
     ko: '스위퍼',
+    code: 'SWPR',
+    nick: '편집자',
+    tags: ['덜어내기장인', '삭제의미학', '단순할수록좋다'],
     emoji: '🧹',
     color: '#1E994F',
     ink: '#ffffff',
@@ -86,6 +97,9 @@ export const TYPES = [
     id: 'grower',
     en: 'Grower',
     ko: '그로워',
+    code: 'GRWR',
+    nick: '육성가',
+    tags: ['지표덕후', '전환율사냥꾼', '사용자편'],
     emoji: '📈',
     color: '#EE447C',
     ink: '#ffffff',
@@ -107,6 +121,9 @@ export const TYPES = [
     id: 'maintainer',
     en: 'Maintainer',
     ko: '메인테이너',
+    code: 'MNTR',
+    nick: '수호자',
+    tags: ['무사고', '새벽알림담당', '신뢰는수작업'],
     emoji: '🛠️',
     color: '#715FF9',
     ink: '#ffffff',
@@ -213,11 +230,15 @@ export const QUESTIONS = [
 
 export const SCORING = { primary: 2, secondary: 1 };
 
+// MBTI 처럼 읽히는 결과 코드. 서브가 없으면 메인 코드만.
+export const resultCode = (main, sub) => (sub ? `${main.code}-${sub.code[0]}` : main.code);
+
 // Threads/X 공유 문구. url 은 결과 페이지의 절대 주소.
 export function shareText(main, sub, url) {
   const lines = [
-    `나의 AX 타입은 ${main.emoji} ${main.ko} (${main.en})`,
+    `나의 AX 타입은 ${resultCode(main, sub)} ${main.emoji} ${main.ko} · ${main.nick}`,
     `"${main.headline}"`,
+    main.tags.map((x) => `#${x}`).join(' '),
   ];
   if (sub) lines.push(`서브 타입: ${sub.emoji} ${sub.ko}`);
   lines.push('', `${SITE.tagline} (${SITE.length})`, `${url} ${SITE.hashtag}`);

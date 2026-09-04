@@ -20,6 +20,9 @@ for (const t of TYPES) {
   }
   if (!Array.isArray(t.traits) || t.traits.length !== 3) fail(`${t.id}: traits 는 3개`);
   if (t.headline.length > 16) fail(`${t.id}: headline 은 16자 이내 (현재 ${t.headline.length}자) — 카드와 OG 에서 잘림`);
+  if (!/^[A-Z]{4}$/.test(t.code || '')) fail(`${t.id}: code 는 대문자 4글자 (현재 '${t.code}')`);
+  if (!t.nick || t.nick.length > 4) fail(`${t.id}: nick 은 1~4자 별명`);
+  if (!Array.isArray(t.tags) || t.tags.length !== 3) fail(`${t.id}: tags 는 3개`);
   for (const rel of ['best', 'clash']) {
     if (!ids.includes(t[rel]?.id)) fail(`${t.id}: ${rel}.id 가 존재하지 않는 타입`);
     if (t[rel]?.id === t.id) fail(`${t.id}: ${rel} 가 자기 자신`);
@@ -38,6 +41,8 @@ QUESTIONS.forEach((q, qi) => {
     primaries.add(o.primary);
   });
 });
+
+if (new Set(TYPES.map((t) => (t.code || '')[0])).size !== TYPES.length) fail('code 첫 글자가 타입마다 달라야 서브 코드(PRTO-G)가 구분된다');
 
 /* 2. 균형: 모든 타입이 primary/secondary 로 같은 횟수 등장 */
 const count = { primary: {}, secondary: {} };
@@ -79,6 +84,19 @@ if (!indexHtml.includes(SITE.description)) fail('index.html 의 description 이 
 if (!indexHtml.includes(SITE.length)) fail('index.html 의 og:description 에 SITE.length 가 없음');
 const readme = readFileSync(resolve(root, 'README.md'), 'utf8');
 for (const t of TYPES) if (!readme.includes(t.headline)) fail(`README 타입 표가 data.js 와 어긋남: '${t.headline}' 없음`);
+
+/* 5. PWA: 매니페스트 아이콘과 서비스 워커 프리캐시 목록이 실제 파일을 가리키는지 */
+const manifest = JSON.parse(readFileSync(resolve(root, 'manifest.webmanifest'), 'utf8'));
+for (const icon of manifest.icons) if (!existsSync(resolve(root, icon.src))) fail(`manifest 아이콘 없음: ${icon.src} — npm run build`);
+const sw = readFileSync(resolve(root, 'sw.js'), 'utf8');
+const shell = [...sw.matchAll(/^\s*'([^']+)',/gm)].map((m) => m[1]).filter((p) => p !== './');
+for (const p of shell) if (!existsSync(resolve(root, p))) fail(`sw.js 프리캐시 대상 없음: ${p}`);
+for (const must of ['index.html', 'app.js', 'data.js', 'scoring.js', 'style.css', ...TYPES.map((t) => `assets/${t.id}.webp`)]) {
+  if (!shell.includes(must)) fail(`sw.js 프리캐시에 ${must} 가 빠짐`);
+}
+for (const must of ['icons/favicon.svg', 'manifest.webmanifest', 'icons/apple-touch-icon.png']) {
+  if (!indexHtml.includes(must)) fail(`index.html 에 ${must} 링크가 없음`);
+}
 
 /* 보고 */
 console.log('타입별 등장 횟수 (primary / secondary):');

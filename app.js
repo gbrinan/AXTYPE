@@ -1,4 +1,4 @@
-import { SITE, TYPES, QUESTIONS, shareText } from './data.js';
+import { SITE, TYPES, QUESTIONS, shareText, resultCode } from './data.js';
 import { score, TOTAL_POINTS } from './scoring.js';
 
 const app = document.getElementById('app');
@@ -39,7 +39,7 @@ function landing() {
       <p class="lead">${esc(SITE.tagline)}</p>
       <p class="desc">${esc(SITE.description)}</p>
       <div class="lineup">
-        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어" loading="lazy"><figcaption>${t.emoji} ${esc(t.ko)}</figcaption></figure>`).join('')}
+        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어" loading="lazy"><figcaption><b>${esc(t.code)}</b> ${esc(t.ko)}</figcaption></figure>`).join('')}
       </div>
       <button class="btn" id="start">테스트 시작 →</button>
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
@@ -81,12 +81,13 @@ function typeCard(t, { label, sub } = {}) {
   const dark = t.ink.toLowerCase() !== '#ffffff';
   return `
     <section class="result-card" data-ink="${dark ? 'dark' : 'light'}" style="--type-color:${t.color};--type-ink:${t.ink}">
-      <p class="label">${esc(label)}</p>
+      <div class="top"><p class="label">${esc(label)}</p><p class="code">${esc(resultCode(t, sub))}</p></div>
       <img class="art" src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어">
-      <h1 class="name">${esc(t.ko)}<small>${esc(t.en)}</small></h1>
+      <h1 class="name">${esc(t.ko)}<small>${esc(t.nick)} · ${esc(t.en)}</small></h1>
       <p class="headline">${esc(t.headline)}</p>
       <p class="tagline">${esc(t.tagline)}</p>
-      ${sub ? `<p class="sub">서브 타입 · ${sub.emoji} ${esc(sub.ko)}</p>` : ''}
+      <p class="tags">${t.tags.map((x) => `<span>#${esc(x)}</span>`).join('')}</p>
+      ${sub ? `<p class="sub">서브 타입 · ${sub.emoji} ${esc(sub.ko)} ${esc(sub.code)}</p>` : ''}
     </section>
   `;
 }
@@ -118,7 +119,7 @@ function typeBody(t) {
 }
 
 function result({ main, sub, ranked }) {
-  document.title = `나의 AX 타입: ${main.emoji} ${main.ko}`;
+  document.title = `나의 AX 타입: ${resultCode(main, sub)} ${main.ko}`;
   const url = resultUrl(main.id);
   const text = shareText(main, sub, url);
   const threads = `https://www.threads.com/intent/post?text=${encodeURIComponent(text)}`;
@@ -162,7 +163,7 @@ function result({ main, sub, ranked }) {
 
 /* ---------- 화면: 공유받은 결과 (?r=<type>) ---------- */
 function shared(t) {
-  document.title = `${t.emoji} ${t.ko}: ${t.headline}`;
+  document.title = `${t.code} ${t.ko}: ${t.headline}`;
   render(`
     <div class="screen">
       ${typeCard(t, { label: '공유받은 AX 타입' })}
@@ -198,31 +199,33 @@ async function saveCard(main, sub) {
   ctx.textAlign = 'center';
   ctx.font = font(700, 36);
   ctx.globalAlpha = .85;
-  ctx.fillText('나의 AX 타입', W / 2, 160);
+  ctx.fillText('나의 AX 타입', W / 2, 140);
   ctx.globalAlpha = 1;
+  ctx.font = font(900, 64);
+  ctx.fillText(resultCode(main, sub), W / 2, 215);
 
   if (art) {
     const size = 560;
-    ctx.drawImage(art, (W - size) / 2, 230, size, size);
+    ctx.drawImage(art, (W - size) / 2, 260, size, size);
   } else {
     ctx.font = font(400, 260);
     ctx.fillText(main.emoji, W / 2, 520);
   }
 
   ctx.font = font(900, 104);
-  ctx.fillText(main.ko, W / 2, 900);
+  ctx.fillText(main.ko, W / 2, 920);
   ctx.font = font(700, 40);
   ctx.globalAlpha = .8;
-  ctx.fillText(main.en, W / 2, 960);
+  ctx.fillText(`${main.nick} · ${main.en}`, W / 2, 980);
   ctx.globalAlpha = 1;
 
   ctx.font = font(700, 54);
-  ctx.fillText(main.headline, W / 2, 1050);
+  ctx.fillText(main.headline, W / 2, 1065);
 
   if (sub) {
     ctx.font = font(700, 36);
     ctx.globalAlpha = .9;
-    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.ko}`, W / 2, 1120);
+    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.ko}`, W / 2, 1130);
     ctx.globalAlpha = 1;
   }
 
@@ -245,5 +248,8 @@ async function saveCard(main, sub) {
 }
 
 /* ---------- 시작 ---------- */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 const sharedType = typeOf(new URLSearchParams(location.search).get('r'));
 sharedType ? shared(sharedType) : landing();

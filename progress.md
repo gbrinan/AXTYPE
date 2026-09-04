@@ -82,6 +82,23 @@
 - `data.js`(색), `app.js`, `style.css`, `scripts/build.mjs`, `scripts/check.mjs`, `og/*.png`
 - `design/*.dc.html`, `design/canvas.json`, 문서 5종
 
+## Session 4
+
+### Phase 7: MBTI 문법, 링크 미리보기, 아이콘, PWA ✅
+
+**작업 내역**:
+
+1. `data.js` 에 code/nick/tags, `resultCode` 규칙. 카드 첫 줄·공유 문구·저장 이미지·OG·랜딩 캡션에 코드
+2. `index.html` 에 og:·twitter:·canonical·theme-color·아이콘·매니페스트 링크. `r/<type>/` 에도 같은 세트와 타입별 theme-color
+3. `icons/favicon.svg` 원본, 빌드가 PNG 5종 렌더. `manifest.webmanifest`, `sw.js`(앱 셸 프리캐시, 캐시 우선)
+4. `check` 가 code 형식·첫 글자 유일성·매니페스트 아이콘·SW 프리캐시 목록을 대조
+5. OG 카드 레이아웃을 코드 배지에 맞춰 조정
+
+**생성/수정 파일**:
+
+- `data.js`, `app.js`, `style.css`, `index.html`, `manifest.webmanifest`, `sw.js`, `icons/*`, `scripts/build.mjs`, `scripts/check.mjs`, `r/*`, `og/*`
+- `design/*`, 문서 5종
+
 ## Test Results
 
 | Test | Input | Expected | Actual | Status |
@@ -100,6 +117,7 @@
 | 콜드 리드 | 세션 밖 리뷰어가 README·DESIGN·CLAUDE·data·app 정독 | 막히는 곳 없음 | minor gaps → 반영 (`findings.md` Learnings) | ✅ |
 | 사실 확인 | `factchk` 양방향 | 모든 주장에 출처 | 문항 수 근거 3건 수정, 나머지 확인됨 | ✅ |
 | 문항 어휘 중립화 후 | `npm run check` + 브라우저 재구동 | 균형 6/6, 분포 유지, 플로우 정상 | 통과 | ✅ |
+| MBTI 코드·PWA 적용 후 | 빌드·check·브라우저 재구동 | 공유 문구가 `PRTO-G` 로 시작, r/ 페이지 og·twitter 14줄, 아이콘 6종 | 통과 | ✅ |
 | 캐릭터 아트 적용 후 | 빌드·check·브라우저 재구동, 스크린샷 육안 | 카드·OG·저장 이미지에 캐릭터, 배경색 이어짐 | 통과 | ✅ |
 
 ## Error Log
@@ -113,8 +131,8 @@
 
 | Question | Answer |
 |---|---|
-| 1. 현재 어느 단계인가? | Phase 5: Delivery — 비주얼(Phase 6)까지 푸시됨, 배포와 실측은 사람 몫 |
-| 2. 다음에 할 일은? | 25명 실측(첫 번째 못) → GitHub Pages 켜기 → Threads 미리보기 확인 → 디자인 캔버스에서 다듬은 것을 `style.css`·`data.js` 로 반영 |
+| 1. 현재 어느 단계인가? | Phase 5: Delivery — Phase 7(MBTI·PWA)까지 푸시됨, 배포와 실측은 사람 몫 |
+| 2. 다음에 할 일은? | 25명 실측(첫 번째 못) → GitHub Pages 켜기 → Threads·카카오톡에 링크 붙여 미리보기 확인, 홈 화면 설치 확인 → 디자인 캔버스에서 다듬은 것을 코드로 반영 |
 | 3. 목표는? | Threads 에서 퍼지는 1분짜리 AX 타입 테스트 |
 | 4. 지금까지 배운 것? | `findings.md` Learnings |
 | 5. 완료한 작업은? | 위 Phase 1~4 |

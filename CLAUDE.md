@@ -32,6 +32,8 @@ npm run build   # r/, og/ 재생성 + check
 
 ## 규칙
 
+- 타입의 `code` 는 대문자 4글자이고 첫 글자가 타입마다 달라야 한다. 결과 코드 `PRTO-G` 의 규칙은 `data.js` 의 `resultCode` 한 곳에 있다.
+- `sw.js` 의 프리캐시 목록과 `manifest.webmanifest` 의 아이콘은 `check` 가 실제 파일과 대조한다. 정적 파일을 추가하면 목록과 `VERSION` 을 같이 올린다.
 - 문항은 10개, 선택지는 3개, 각 선택지는 primary +2 / secondary +1. 모든 타입이 primary 6회, secondary 6회. `check` 가 강제한다.
 - `assets/<id>.webp` 는 타입별 캐릭터 아트다. 파일명은 타입 id, 배경색은 `data.js` 의 `color` 와 같아야 한다 (`check` 가 존재만 확인하고 색은 사람이 맞춘다). 생성 프롬프트와 모델은 `findings.md` 에 있다.
 - `SITE.url` 이 배포 주소의 유일한 원천이다 (끝 슬래시 없이). 런타임 공유 링크는 `location` 에서 계산하므로 어느 호스트에서도 동작하지만, 크롤러가 읽는 OG 절대 경로는 빌드 시점의 `SITE.url` 을 쓴다.

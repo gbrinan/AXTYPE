@@ -6,7 +6,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 
 ## Current Phase
 
-🔄 Phase 5: Delivery (Phase 6 비주얼 완료)
+🔄 Phase 5: Delivery (Phase 6 비주얼, Phase 7 MBTI·PWA 완료)
 
 ## Phases
 
@@ -53,6 +53,13 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 - [x] 랜딩 라인업, 결과·공유받은 카드, 저장 카드, OG 이미지에 적용
 - [x] 타입 색을 이미지 배경색에 맞춤
 - [x] 디자인 캔버스 아트보드에 반영
+
+### Phase 7: MBTI 문법 + 링크 미리보기·아이콘·PWA ✅
+
+- [x] 타입별 4글자 코드, 별명, 태그 3개. 결과 코드 `메인-서브첫글자`
+- [x] 카드·공유 문구·저장 이미지·OG 에 코드 표시
+- [x] index 와 r/ 페이지에 og:·twitter: 태그, 파비콘, 테마색, 애플 아이콘
+- [x] 매니페스트, 서비스 워커, 아이콘 5종 생성. check 가 목록·파일 대조
 
 ## Key Questions
 
