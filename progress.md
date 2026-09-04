@@ -99,6 +99,16 @@
 - `data.js`, `app.js`, `style.css`, `index.html`, `manifest.webmanifest`, `sw.js`, `icons/*`, `scripts/build.mjs`, `scripts/check.mjs`, `r/*`, `og/*`
 - `design/*`, 문서 5종
 
+## Session 5
+
+### Phase 8: CI 와 배포 자동화 🔄
+
+**작업 내역**:
+
+1. 세션 밖 스크래치에 있던 브라우저 구동 스크립트를 `scripts/smoke.mjs` 로 저장소에 넣고 단언으로 바꿈 (되돌아가기, 결과 코드 형식, 공유 문구, 막대 합 100, 카드 저장, 공유받은 화면, `?r=constructor`, OG 리다이렉트, 서브 타입, PWA 파일 응답)
+2. `.github/workflows/ci.yml`: PR 과 main 에서 check + smoke, main 에서만 Pages 배포
+3. 브랜치에서 PR 로 올려 CI 확인
+
 ## Test Results
 
 | Test | Input | Expected | Actual | Status |
