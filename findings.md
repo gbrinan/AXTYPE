@@ -67,16 +67,26 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 
 ### 캐릭터 아트 (이미지 생성)
 
-이미지 생성 모델(Higgsfield 경유 `nano_banana_pro`, 2k, 1:1)로 타입별 피규어 다섯 장을 만들었다. 공통 프롬프트 뼈대:
+이미지 생성 모델(Higgsfield 경유 `nano_banana_pro`, 2k, 1:1)로 타입별 동물 피규어 다섯 장을 만들었다. 공통 프롬프트 뼈대:
 
-> Glossy 3D chibi blind-box collectible vinyl figurine, big round head, tiny body, smooth PVC material with soft specular highlights, soft studio lighting, centered full body, designer art toy aesthetic trending on Douyin, high detail 3D render, no text, no watermark. Character: <타입 설명>. Background: flat solid <타입 색>, nothing else.
+> Glossy 3D chibi blind-box collectible vinyl figurine of an animal, big round head, tiny body, smooth PVC material with soft specular highlights, soft studio lighting, centered full body, designer art toy aesthetic trending on Douyin, high detail 3D render, no text, no watermark. Character: <타입 동물과 소품>. Background: flat solid <타입 색>, nothing else.
 
-타입별 설명: 프로토타이퍼 = 전구 달린 노란 후드, 고글, 만들다 만 장치 셋을 저글링 / 빌더 = 흰 안전모, 로켓 제트팩, 체크 표시 태블릿 / 스위퍼 = 흰·민트 옷, 큰 빗자루, 회색 큐브가 반짝이로 쓸려 나감 / 그로워 = 물뿌리개, 잎이 상승 막대그래프인 화분, 하트 꽃 / 메인테이너 = 헤드셋, 유틸리티 조끼, 어깨에 렌치, 방패 배지.
+타입별 동물과 소품 (동물은 타입의 headline 을 성격으로 옮긴 것):
 
-- 결과 원본은 2048×2048 PNG. 저장소에는 640×640 WebP(각 12~19KB)만 둔다. 웹·OG·저장 카드 모두 이 크기로 충분하다
-- `data.js` 의 타입 색은 생성된 이미지의 배경색을 모서리에서 샘플링한 값이다 (프롬프트의 색과 몇 단계 다르게 나온다). 카드와 이미지가 한 장으로 이어지려면 이미지 쪽에 맞춰야 한다
-- 다섯 캐릭터가 한 줄로 선 라인업 이미지도 만들었지만 쓰지 않았다. 다섯 장을 CSS 로 나란히 놓으면 같은 효과이고, 한 캐릭터를 바꿔도 라인업을 다시 만들 필요가 없다 (SSOT)
+| 타입 | 동물 | 왜 이 동물인가 | 소품 |
+|---|---|---|---|
+| 프로토타이퍼 | 주황 줄무늬 고양이 | 호기심, 가만있지 못함, 건드려 보고 넘어뜨리는 실험가 | 전구 달린 노란 후드, 고글, 만들다 만 장치 셋 |
+| 빌더 | 골든 리트리버 강아지 | 던진 공을 끝까지 물어오는 완주자 | 흰 안전모, 로켓 제트팩, 체크 표시 태블릿 |
+| 스위퍼 | 흰 토끼 | 깔끔함, 군더더기 없음 | 흰·민트 옷, 큰 빗자루, 회색 큐브가 반짝이로 |
+| 그로워 | 갈색 아기 곰 | 따뜻하게 돌보며 키우는 사람 | 물뿌리개, 잎이 상승 막대그래프인 화분, 하트 꽃 |
+| 메인테이너 | 부엉이 | 밤에도 깨어 지켜보는 파수꾼 | 헤드셋, 유틸리티 조끼, 어깨에 렌치, 방패 배지 |
+
+- 첫 부엉이는 배경이 그라데이션에 받침대까지 나와 다시 만들었다. "perfectly flat uniform solid ... no gradient, no vignette, no floor, no pedestal" 을 명시하면 단색이 나온다
+- 결과 원본은 2048×2048 PNG. 저장소에는 640×640 WebP(각 11~18KB)만 둔다. 웹·OG·저장 카드 모두 이 크기로 충분하다
+- `data.js` 의 타입 색은 생성된 이미지의 모서리 일곱 점을 평균한 값이다 (프롬프트의 색과 몇 단계 다르게 나온다). 카드와 이미지가 한 장으로 이어지려면 이미지 쪽에 맞춰야 한다
+- 다섯 캐릭터가 한 줄로 선 라인업 이미지는 만들지 않는다. 다섯 장을 CSS 로 나란히 놓으면 같은 효과이고, 한 캐릭터를 바꿔도 라인업을 다시 만들 필요가 없다 (SSOT)
 - 이 환경에서는 생성 결과 CDN 이 프록시에 막혀 있어, 생성 서비스의 샌드박스에서 축소·인코딩한 텍스트를 받아 파일로 복원했다. 체크섬으로 다섯 장 모두 원본과 일치함을 확인했다
+- 이전 버전은 사람 모양 치비 피규어였다 (기각 이유는 아래 표)
 
 ### 링크 미리보기·아이콘·PWA
 
@@ -105,6 +115,7 @@ Boris Cherny (Head of Claude Code, Anthropic) 가 X 에 올린 글. 요지: 엔�
 | React/Next 등 프레임워크 | 파일 여섯 개짜리 앱에 빌드 체인은 슬롭. 5년 뒤에도 열리는 쪽을 택함 |
 | 서버리스 OG 이미지 동적 생성 | 호스팅을 특정 플랫폼에 묶는다. 정적 PNG 5장이면 충분 |
 | 5지선다 (타입당 하나) | 답이 뻔해진다. 사용자가 타입을 역산해 고르게 됨 |
+| 사람 모양 치비 피규어 (1차 아트) | 다섯 명이 다 비슷한 얼굴이라 한눈에 안 갈린다. 동물은 종 자체가 성격을 말해서 "나는 고양이" 한마디로 결과가 전달된다 |
 | 20+ 문항으로 신뢰도 확보 | 완주율이 무너진다. 이건 심리검사가 아니라 공유용 콘텐츠 |
 | "상위 N% 희소 타입" 문구 | 데이터가 없다. 지어내면 정직성 게이트 위반 |
 | 이메일 수집 / 결과 저장 / 로그인 | 사전 게이트는 공유율을 죽인다. 지금 목표는 확산 |

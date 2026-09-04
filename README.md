@@ -39,7 +39,7 @@ manifest.webmanifest, sw.js  홈 화면 설치와 오프라인용. 파일을 추
 icons/         favicon.svg 가 원본. PNG 들은 build 가 렌더한다. (생성물)
 app.js         화면 렌더링, 공유(Threads/X/복사), 결과 카드 이미지 저장.
 style.css
-assets/<type>.webp  타입별 3D 캐릭터 아트 640×640. 생성 프롬프트는 findings.md 에.
+assets/<type>.webp  타입별 3D 동물 피규어 아트 640×640 (고양이·강아지·토끼·곰·부엉이). 생성 프롬프트는 findings.md 에.
 r/<type>/      공유 링크가 가리키는 곳. OG 태그만 들고 본편으로 보낸다. (생성물)
 og/<type>.png  링크 미리보기 이미지 1200×630. (생성물)
 scripts/       build.mjs (생성), check.mjs (검증), smoke.mjs (브라우저 한 바퀴)
