@@ -6,7 +6,7 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 
 ## Current Phase
 
-🔄 Phase 5: Delivery (Phase 6 비주얼, Phase 7 MBTI·PWA 완료, Vercel 배포 연결됨)
+🔄 Phase 5: Delivery (Phase 6~9 완료, Vercel 배포 연결됨, PR 2건 대기)
 
 ## Phases
 
@@ -66,6 +66,13 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 - [x] `scripts/smoke.mjs`: 브라우저 한 바퀴를 단언으로
 - [x] `.github/workflows/ci.yml`: PR 마다 check + smoke, main 푸시에 Pages 배포
 - [ ] PR 열고 CI 초록 확인 → 합치기 → 배포 주소에서 미리보기·PWA 확인 (사람)
+
+### Phase 9: 동물 피규어로 교체 ✅
+
+- [x] 고양이·강아지·토끼·곰·부엉이 5장 생성, 배경 단색 확인 (부엉이는 재생성)
+- [x] `assets/` 교체, 타입 색을 새 배경색에 맞춤, `sw.js` VERSION 올림, OG 재생성
+- [x] check·smoke 통과, 문서의 동물 매핑 표
+- [ ] PR 합치기 → 배포 주소에서 카드·미리보기 확인 (사람)
 
 ## Key Questions
 

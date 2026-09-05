@@ -124,6 +124,21 @@
 
 - `vercel.json`, `data.js`, `index.html`, `r/*`, `.github/workflows/ci.yml`, `design/ShareCard.dc.html`, 문서 4종
 
+## Session 7
+
+### Phase 9: 동물 피규어 ✅
+
+**작업 내역**:
+
+1. 같은 블라인드 박스 프롬프트 뼈대로 타입별 동물 5장 생성 (동물·소품 표는 `findings.md`). 첫 부엉이는 배경이 그라데이션이라 단색 지시를 붙여 재생성
+2. 샌드박스에서 640px WebP 로 축소·base64 로 받아 복원, 체크섬 5장 일치
+3. `data.js` 타입 색을 새 이미지 모서리 평균값으로, `sw.js` VERSION v2, `npm run build` 로 OG 재생성
+4. check·smoke 통과. DESIGN·README·findings 의 비주얼 설명을 동물로, 사람 피규어는 기각 표에
+
+**생성/수정 파일**:
+
+- `assets/*.webp`, `data.js`, `sw.js`, `og/*.png`, `r/*`, `docs/DESIGN.md`, `README.md`, `findings.md`, `tasks.md`, `progress.md`
+
 ## Test Results
 
 | Test | Input | Expected | Actual | Status |
@@ -144,6 +159,7 @@
 | 문항 어휘 중립화 후 | `npm run check` + 브라우저 재구동 | 균형 6/6, 분포 유지, 플로우 정상 | 통과 | ✅ |
 | MBTI 코드·PWA 적용 후 | 빌드·check·브라우저 재구동 | 공유 문구가 `PRTO-G` 로 시작, r/ 페이지 og·twitter 14줄, 아이콘 6종 | 통과 | ✅ |
 | 캐릭터 아트 적용 후 | 빌드·check·브라우저 재구동, 스크린샷 육안 | 카드·OG·저장 이미지에 캐릭터, 배경색 이어짐 | 통과 | ✅ |
+| 동물 피규어 교체 후 | 빌드·check·smoke, OG 육안 | 5장 체크섬 일치, 배경 단색, 카드와 색 이어짐 | 통과 | ✅ |
 
 ## Error Log
 
@@ -156,7 +172,7 @@
 
 | Question | Answer |
 |---|---|
-| 1. 현재 어느 단계인가? | Phase 5: Delivery — Vercel 에 배포됨, CI PR 열림, 실측은 사람 몫 |
+| 1. 현재 어느 단계인가? | Phase 5: Delivery — Vercel 에 배포됨, CI PR 과 동물 아트 PR 열림, 실측은 사람 몫 |
 | 2. 다음에 할 일은? | 25명 실측(첫 번째 못) → Threads·카카오톡에 `https://axtype.vercel.app` 붙여 미리보기 확인, 홈 화면 설치 확인 → PR 합치기 → 디자인 캔버스에서 다듬은 것을 코드로 반영 |
 | 3. 목표는? | Threads 에서 퍼지는 1분짜리 AX 타입 테스트 |
 | 4. 지금까지 배운 것? | `findings.md` Learnings |

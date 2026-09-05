@@ -1,6 +1,6 @@
 // 앱 셸을 미리 캐시해 오프라인·재방문에서 즉시 뜨게 한다.
 // 파일을 추가하거나 바꾸면 VERSION 을 올린다. 옛 캐시는 activate 에서 지운다.
-const VERSION = 'axtype-v1';
+const VERSION = 'axtype-v2';
 const SHELL = [
   './',
   'index.html',
