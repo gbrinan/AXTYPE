@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  # 데이터 구조·문항 균형·결과 분포·생성물 동기화·PWA 목록 검증, 그리고 실제 브라우저로 한 바퀴.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run check
+      - run: npm i --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: npm run smoke

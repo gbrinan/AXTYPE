@@ -22,7 +22,8 @@
 
 ```bash
 npm run dev        # http://localhost:3000
-npm run check      # 문항 균형·결과 분포·생성물 동기화 검증
+npm run check      # 문항 균형·결과 분포·생성물 동기화·PWA 목록 검증
+npm run smoke      # 실제 브라우저로 한 바퀴 (Playwright 필요)
 npm run build      # r/<type>/ 와 og/*.png 를 data.js 에서 다시 생성하고 check 실행 (Playwright 필요)
 ```
 
@@ -41,7 +42,8 @@ style.css
 assets/<type>.webp  타입별 3D 캐릭터 아트 640×640. 생성 프롬프트는 findings.md 에.
 r/<type>/      공유 링크가 가리키는 곳. OG 태그만 들고 본편으로 보낸다. (생성물)
 og/<type>.png  링크 미리보기 이미지 1200×630. (생성물)
-scripts/       build.mjs (생성), check.mjs (검증)
+scripts/       build.mjs (생성), check.mjs (검증), smoke.mjs (브라우저 한 바퀴)
+.github/workflows/ci.yml  PR 과 main 푸시마다 check + smoke
 docs/DESIGN.md 왜 이렇게 설계했는지: 바이럴 루프, 문항 원칙, 채점, 정직성 게이트.
 design/        Claude Design 캔버스 원본(아트보드 6장 + canvas.json). 화면의 거울이지 원본이 아니다.
 ```
@@ -56,7 +58,9 @@ design/        Claude Design 캔버스 원본(아트보드 6장 + canvas.json). 
 
 정적 호스팅 어디든 된다. 한 가지만 맞춘다: `data.js` 의 `SITE.url` 을 실제 배포 주소로, 끝 슬래시 없이. 공유 링크의 미리보기(OG 이미지)가 절대 경로로 이 값을 쓰기 때문이다. 바꾼 뒤 `npm run build` 로 생성물을 다시 만든다.
 
-GitHub Pages 라면 Settings → Pages → Branch `main`, 폴더 `/ (root)`. 서비스 워커는 HTTPS 에서만 등록되므로 로컬에서는 PWA 설치가 뜨지 않는다.
+배포는 Vercel 이 한다. 프로젝트 `axtype` 이 이 저장소에 연결되어 있어 `main` 에 푸시되면 `https://axtype.vercel.app` 에 올라간다 (`vercel.json`: 설치·빌드 없이 루트를 그대로 서빙). 서비스 워커는 HTTPS 에서만 등록되므로 로컬에서는 PWA 설치가 뜨지 않는다.
+
+작업은 브랜치에서 PR 로 올린다. PR 마다 `check` 와 `smoke` 가 돌고, 둘 다 통과해야 합친다.
 
 ## 작업 방식
 

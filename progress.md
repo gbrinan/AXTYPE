@@ -44,7 +44,7 @@
 
 ### Phase 5: Delivery 🔄
 
-첫 커밋과 `main` 푸시. GitHub Pages 활성화와 실제 Threads 미리보기 확인은 사람 몫.
+첫 커밋과 `main` 푸시. 배포는 Session 6 에서 Vercel 로. 실제 Threads 미리보기 확인은 사람 몫.
 
 ## Session 2
 
@@ -99,6 +99,31 @@
 - `data.js`, `app.js`, `style.css`, `index.html`, `manifest.webmanifest`, `sw.js`, `icons/*`, `scripts/build.mjs`, `scripts/check.mjs`, `r/*`, `og/*`
 - `design/*`, 문서 5종
 
+## Session 5
+
+### Phase 8: CI 와 배포 자동화 🔄
+
+**작업 내역**:
+
+1. 세션 밖 스크래치에 있던 브라우저 구동 스크립트를 `scripts/smoke.mjs` 로 저장소에 넣고 단언으로 바꿈 (되돌아가기, 결과 코드 형식, 공유 문구, 막대 합 100, 카드 저장, 공유받은 화면, `?r=constructor`, OG 리다이렉트, 서브 타입, PWA 파일 응답)
+2. `.github/workflows/ci.yml`: PR 과 main 에서 check + smoke
+3. 브랜치에서 PR 로 올려 CI 확인
+
+## Session 6
+
+### 배포: Vercel ✅
+
+**작업 내역**:
+
+1. Vercel 프로젝트 `axtype` 을 저장소에 연결 (프로덕션 브랜치 `main`)
+2. `vercel.json` 으로 설치·빌드를 건너뛰고 루트를 그대로 서빙. `SITE.url` 과 `index.html` 절대 경로를 배포 주소로 바꾸고 `r/` 재생성
+3. 배포된 주소에서 랜딩·`r/grower/`·매니페스트 응답 확인 (OG 절대 경로가 배포 주소를 가리킴)
+4. CI 의 GitHub Pages 배포 잡 제거, 문서의 배포 안내를 Vercel 로
+
+**생성/수정 파일**:
+
+- `vercel.json`, `data.js`, `index.html`, `r/*`, `.github/workflows/ci.yml`, `design/ShareCard.dc.html`, 문서 4종
+
 ## Test Results
 
 | Test | Input | Expected | Actual | Status |
@@ -131,8 +156,8 @@
 
 | Question | Answer |
 |---|---|
-| 1. 현재 어느 단계인가? | Phase 5: Delivery — Phase 7(MBTI·PWA)까지 푸시됨, 배포와 실측은 사람 몫 |
-| 2. 다음에 할 일은? | 25명 실측(첫 번째 못) → GitHub Pages 켜기 → Threads·카카오톡에 링크 붙여 미리보기 확인, 홈 화면 설치 확인 → 디자인 캔버스에서 다듬은 것을 코드로 반영 |
+| 1. 현재 어느 단계인가? | Phase 5: Delivery — Vercel 에 배포됨, CI PR 열림, 실측은 사람 몫 |
+| 2. 다음에 할 일은? | 25명 실측(첫 번째 못) → Threads·카카오톡에 `https://axtype.vercel.app` 붙여 미리보기 확인, 홈 화면 설치 확인 → PR 합치기 → 디자인 캔버스에서 다듬은 것을 코드로 반영 |
 | 3. 목표는? | Threads 에서 퍼지는 1분짜리 AX 타입 테스트 |
 | 4. 지금까지 배운 것? | `findings.md` Learnings |
 | 5. 완료한 작업은? | 위 Phase 1~4 |

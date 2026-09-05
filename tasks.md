@@ -61,6 +61,12 @@ Threads 에서 퍼지는 1분짜리 "AI 시대 일꾼 타입" 테스트. 프로�
 - [x] index 와 r/ 페이지에 og:·twitter: 태그, 파비콘, 테마색, 애플 아이콘
 - [x] 매니페스트, 서비스 워커, 아이콘 5종 생성. check 가 목록·파일 대조
 
+
+
+- [x] `scripts/smoke.mjs`: 브라우저 한 바퀴를 단언으로
+- [x] `.github/workflows/ci.yml`: PR 마다 check + smoke, main 푸시에 Pages 배포
+- [ ] PR 열고 CI 초록 확인 → 합치기 → 배포 주소에서 미리보기·PWA 확인 (사람)
+
 ## Key Questions
 
 0. 완주자가 실제로 올리는가? 설계 전체가 이 가정 위에 있다. 코드보다 먼저 25명 실측으로 확인한다.
