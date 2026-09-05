@@ -39,7 +39,7 @@ function landing() {
       <p class="lead">${esc(SITE.tagline)}</p>
       <p class="desc">${esc(SITE.description)}</p>
       <div class="lineup">
-        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어" loading="lazy"><figcaption><b>${esc(t.code)}</b> ${esc(t.ko)}</figcaption></figure>`).join('')}
+        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} ${esc(t.nick)} 피규어" loading="lazy"><figcaption><b>${esc(t.code)}</b> ${esc(t.nick)}<small>${esc(t.ko)}</small></figcaption></figure>`).join('')}
       </div>
       <button class="btn" id="start">테스트 시작 →</button>
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
@@ -82,12 +82,12 @@ function typeCard(t, { label, sub } = {}) {
   return `
     <section class="result-card" data-ink="${dark ? 'dark' : 'light'}" style="--type-color:${t.color};--type-ink:${t.ink}">
       <div class="top"><p class="label">${esc(label)}</p><p class="code">${esc(resultCode(t, sub))}</p></div>
-      <img class="art" src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어">
-      <h1 class="name">${esc(t.ko)}<small>${esc(t.nick)} · ${esc(t.en)}</small></h1>
+      <img class="art" src="${artUrl(t.id)}" alt="${esc(t.ko)} ${esc(t.nick)} 피규어">
+      <h1 class="name">${esc(t.nick)}<small>${esc(t.ko)} · ${esc(t.en)}</small></h1>
       <p class="headline">${esc(t.headline)}</p>
       <p class="tagline">${esc(t.tagline)}</p>
       <p class="tags">${t.tags.map((x) => `<span>#${esc(x)}</span>`).join('')}</p>
-      ${sub ? `<p class="sub">서브 타입 · ${sub.emoji} ${esc(sub.ko)} ${esc(sub.code)}</p>` : ''}
+      ${sub ? `<p class="sub">서브 타입 · ${sub.emoji} ${esc(sub.nick)} ${esc(sub.ko)} ${esc(sub.code)}</p>` : ''}
     </section>
   `;
 }
@@ -97,7 +97,7 @@ function typeBody(t) {
   const clash = byId[t.clash.id];
   return `
     <section class="section">
-      <h2>동료가 알아보는 순간</h2>
+      <h2>무리가 알아보는 순간</h2>
       <ul>${t.traits.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
     </section>
     <section class="section">
@@ -111,15 +111,15 @@ function typeBody(t) {
     <section class="section">
       <h2>케미</h2>
       <div class="chem">
-        <div><b>최고의 짝</b><strong>${best.emoji} ${esc(best.ko)}</strong><span>${esc(t.best.why)}</span></div>
-        <div><b>부딪히지만 필요한 짝</b><strong>${clash.emoji} ${esc(clash.ko)}</strong><span>${esc(t.clash.why)}</span></div>
+        <div><b>가장 잘 맞는 짝</b><strong>${best.emoji} ${esc(best.nick)}</strong><span>${esc(t.best.why)}</span></div>
+        <div><b>부딪히지만 필요한 짝</b><strong>${clash.emoji} ${esc(clash.nick)}</strong><span>${esc(t.clash.why)}</span></div>
       </div>
     </section>
   `;
 }
 
 function result({ main, sub, ranked }) {
-  document.title = `나의 AX 타입: ${resultCode(main, sub)} ${main.ko}`;
+  document.title = `나의 AX 타입: ${resultCode(main, sub)} ${main.nick}`;
   const url = resultUrl(main.id);
   const text = shareText(main, sub, url);
   const threads = `https://www.threads.com/intent/post?text=${encodeURIComponent(text)}`;
@@ -138,15 +138,15 @@ function result({ main, sub, ranked }) {
       </section>
       ${typeBody(main)}
       <section class="section">
-        <h2>내 안의 다섯 타입</h2>
+        <h2>내 안의 다섯 동물</h2>
         <div class="bars">
           ${ranked.map((r) => {
             const t = byId[r.id];
             const pct = Math.round((r.total / TOTAL_POINTS) * 100);
-            return `<div class="row"><span>${t.emoji} ${esc(t.ko)}</span><div class="track"><i style="width:${pct}%;background:${t.color}"></i></div><span class="pct">${pct}%</span></div>`;
+            return `<div class="row"><span>${t.emoji} ${esc(t.nick)}</span><div class="track"><i style="width:${pct}%;background:${t.color}"></i></div><span class="pct">${pct}%</span></div>`;
           }).join('')}
         </div>
-        <p class="footnote">내 답이 다섯 타입에 나뉜 비율입니다. 많은 사람이 두세 타입에 걸쳐 있으니 메인과 서브를 함께 보세요.</p>
+        <p class="footnote">내 답이 다섯 동물에게 나뉜 비율입니다. 많은 사람이 두세 동물에 걸쳐 있으니 메인과 서브를 함께 보세요.</p>
       </section>
       <button class="btn secondary" id="retry">다시 하기</button>
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
@@ -163,7 +163,7 @@ function result({ main, sub, ranked }) {
 
 /* ---------- 화면: 공유받은 결과 (?r=<type>) ---------- */
 function shared(t) {
-  document.title = `${t.code} ${t.ko}: ${t.headline}`;
+  document.title = `${t.code} ${t.nick}: ${t.headline}`;
   render(`
     <div class="screen">
       ${typeCard(t, { label: '공유받은 AX 타입' })}
@@ -213,10 +213,10 @@ async function saveCard(main, sub) {
   }
 
   ctx.font = font(900, 104);
-  ctx.fillText(main.ko, W / 2, 920);
+  ctx.fillText(main.nick, W / 2, 920);
   ctx.font = font(700, 40);
   ctx.globalAlpha = .8;
-  ctx.fillText(`${main.nick} · ${main.en}`, W / 2, 980);
+  ctx.fillText(`${main.ko} · ${main.en}`, W / 2, 980);
   ctx.globalAlpha = 1;
 
   ctx.font = font(700, 54);
@@ -225,7 +225,7 @@ async function saveCard(main, sub) {
   if (sub) {
     ctx.font = font(700, 36);
     ctx.globalAlpha = .9;
-    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.ko}`, W / 2, 1130);
+    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.nick}`, W / 2, 1130);
     ctx.globalAlpha = 1;
   }
 
