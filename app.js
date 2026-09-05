@@ -12,6 +12,26 @@ const artUrl = (id) => `assets/${id}.webp`; // 타입별 캐릭터. 파일명은
 
 const state = { answers: [] };
 
+// 화면을 주소에 남긴다. 문항은 #q<번호>, 결과는 #r<답안>.
+// 결과 해시는 답을 그대로 담고 있어서 새로고침해도 같은 결과가 다시 나온다.
+// 문항 도중의 답은 sessionStorage 에 두되, 막혀 있으면 처음부터 다시 시작한다.
+const STORE = 'axtype-answers';
+const saveAnswers = (a) => { try { sessionStorage.setItem(STORE, a.join('')); } catch { /* 저장이 막힌 브라우저 */ } };
+const loadAnswers = () => { try { return digits(sessionStorage.getItem(STORE) || ''); } catch { return null; } };
+const clearAnswers = () => { try { sessionStorage.removeItem(STORE); } catch { /* 무시 */ } };
+
+// '0120' → [0,1,2,0]. 선택지 번호가 아니면 null.
+function digits(s) {
+  if (!/^[0-2]*$/.test(s) || s.length > QUESTIONS.length) return null;
+  return s.split('').map(Number);
+}
+
+const urlFor = (hash) => location.pathname + (hash || '');
+function go(hash, { replace = false } = {}) {
+  history[replace ? 'replaceState' : 'pushState'](null, '', urlFor(hash));
+  route();
+}
+
 function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -45,7 +65,7 @@ function landing() {
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
     </section>
   `);
-  document.getElementById('start').onclick = () => { state.answers = []; question(0); };
+  document.getElementById('start').onclick = () => { state.answers = []; clearAnswers(); go('#q1'); };
 }
 
 /* ---------- 화면: 문항 ---------- */
@@ -69,11 +89,12 @@ function question(i) {
     b.onclick = () => {
       state.answers[i] = Number(b.dataset.k);
       state.answers.length = i + 1;
-      i + 1 < n ? question(i + 1) : result(score(state.answers));
+      saveAnswers(state.answers);
+      go(i + 1 < n ? `#q${i + 2}` : `#r${state.answers.join('')}`);
     };
   });
   const back = document.getElementById('back');
-  if (back) back.onclick = () => question(i - 1);
+  if (back) back.onclick = () => history.back();
 }
 
 /* ---------- 화면: 결과 ---------- */
@@ -158,7 +179,7 @@ function result({ main, sub, ranked }) {
     catch { toast('복사에 실패했어요. 주소창을 이용해 주세요'); }
   };
   document.getElementById('save').onclick = () => saveCard(main, sub);
-  document.getElementById('retry').onclick = () => { history.replaceState(null, '', location.pathname); landing(); };
+  document.getElementById('retry').onclick = () => { state.answers = []; clearAnswers(); go(''); };
 }
 
 /* ---------- 화면: 공유받은 결과 (?r=<type>) ---------- */
@@ -173,9 +194,9 @@ function shared(t) {
       <p class="footnote">5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
     </div>
   `);
-  const go = () => { history.replaceState(null, '', location.pathname); state.answers = []; question(0); };
-  document.getElementById('start').onclick = go;
-  document.getElementById('start2').onclick = go;
+  const begin = () => { state.answers = []; clearAnswers(); go('#q1'); };
+  document.getElementById('start').onclick = begin;
+  document.getElementById('start2').onclick = begin;
 }
 
 /* ---------- 결과 카드 이미지 (1080×1350, 4:5) ---------- */
@@ -251,5 +272,25 @@ async function saveCard(main, sub) {
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
-const sharedType = typeOf(new URLSearchParams(location.search).get('r'));
-sharedType ? shared(sharedType) : landing();
+// 주소 → 화면. 뒤로가기·앞으로가기·새로고침이 모두 여기를 지난다.
+function route() {
+  const h = location.hash;
+  const done = h.startsWith('#r') && digits(h.slice(2));
+  if (done && done.length === QUESTIONS.length) {
+    state.answers = done;
+    return result(score(done));
+  }
+  const q = /^#q(\d+)$/.exec(h);
+  if (q) {
+    const i = Math.min(Math.max(Number(q[1]), 1), QUESTIONS.length) - 1;
+    // 새로고침이면 state 가 비어 있다. 저장해 둔 답으로 되살리고, 그것도 없으면 1번부터.
+    if (state.answers.length < i) state.answers = loadAnswers()?.slice(0, i) || [];
+    if (state.answers.length < i) return go('#q1', { replace: true });
+    return question(i);
+  }
+  const sharedType = typeOf(new URLSearchParams(location.search).get('r'));
+  return sharedType ? shared(sharedType) : landing();
+}
+
+window.addEventListener('popstate', route);
+route();

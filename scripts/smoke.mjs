@@ -63,6 +63,30 @@ try {
   expect(dl.suggestedFilename() === `axtype-${first.id}.png`, '저장 파일명이 다르다');
   await dl.saveAs(join(out, dl.suggestedFilename()));
 
+  // 주소에 상태가 남는가: 뒤로가기, 새로고침, 주소 붙여넣기
+  const resultHash = new URL(page.url()).hash;
+  expect(/^#r[0-2]{10}$/.test(resultHash), `결과 주소에 답이 남지 않는다: ${resultHash}`);
+  await page.reload();
+  await page.waitForSelector('.result-card');
+  expect((await page.textContent('.result-card .code')).trim() === code, '결과를 새로고침하면 결과가 바뀐다');
+  await page.goBack();
+  await page.waitForSelector('.option');
+  expect((await page.textContent('.progress span')).trim().startsWith('10 /'), '결과에서 뒤로가기가 마지막 문항으로 오지 않는다');
+  await page.goBack();
+  await page.waitForSelector('.option');
+  expect(await page.$('.option.selected'), '뒤로 간 문항에 고른 답이 남아 있지 않다');
+  await page.reload();
+  await page.waitForSelector('.option');
+  expect((await page.textContent('.progress span')).trim().startsWith('9 /'), '문항 도중 새로고침하면 자리를 잃는다');
+
+  // 망가진 주소로 들어와도 안전하게
+  for (const bad of ['#q0', '#q99', '#r999', '#rabc', '#zzz']) {
+    await page.goto(BASE + bad);
+    await page.waitForTimeout(150);
+    const screen = await page.evaluate(() => (document.querySelector('.result-card') ? 'result' : document.querySelector('.option') ? 'question' : document.getElementById('start') ? 'landing' : 'none'));
+    expect(screen !== 'none', `${bad} 에서 아무 화면도 뜨지 않는다`);
+  }
+
   // 공유받은 화면
   await page.goto(`${BASE}?r=${TYPES[2].id}`);
   await page.waitForSelector('#start');
