@@ -171,12 +171,29 @@
 
 - `app.js`, `scripts/smoke.mjs`, `docs/DESIGN.md`, `findings.md`, `tasks.md`, `progress.md`
 
+## Session 10
+
+### Phase 12: 문항 개편 ✅
+
+**작업 내역**:
+
+1. 열 문항을 행동 장면으로 교체. 선호·자기 이미지를 묻던 문항과 한 선택지에 두 타입이 섞이던 표현을 없앰
+2. 채점을 `primary +2 / secondary +1` 에서 `선택지 하나 = 타입 하나 = 1점` 으로. `TOTAL_POINTS` 30 → 10, 막대 합이 정확히 100%
+3. `check` 규칙 교체: 타입마다 6번, 한 문항에 같은 타입 금지, 선택지 문구에 타입 이름 노출 금지
+4. 브라우저로 10가지 검증. 다섯 타입 모두 결과로 도달, 답을 바꿔도 점수 중복 없음
+5. 판별 여유가 줄어든 것(1위 동점 34.7%)을 측정해 DESIGN 에 수치와 선택지로 남김
+
+**생성/수정 파일**:
+
+- `data.js`(QUESTIONS·SCORING), `scoring.js`, `scripts/check.mjs`, `docs/DESIGN.md`, `CLAUDE.md`, `findings.md`, `tasks.md`, `progress.md`
+
 ## Test Results
 
 | Test | Input | Expected | Actual | Status |
 |---|---|---|---|---|
-| 구조 검증 | `npm run check` | 5타입·10문항·3지선다, primary≠secondary | 통과 | ✅ |
-| 균형 | `npm run check` | 모든 타입 primary 6 / secondary 6 | 6/6 ×5 | ✅ |
+| 구조 검증 | `npm run check` | 5타입·10문항·3지선다, 선택지마다 타입 하나 | 통과 | ✅ |
+| 균형 | `npm run check` | 30 슬롯에서 모든 타입 6번 | 6회 ×5 | ✅ |
+| 타입 이름 노출 | `npm run check` | 선택지 문구에 타입 이름·코드·별명 없음 | 없음 | ✅ |
 | 분포 | 59,049 조합 전수 | 어떤 타입도 12% 미만 아님 | 18.9%~21.0% | ✅ |
 | 생성물 동기화 | `npm run check` | `r/`·`og/`·`index.html` og:image 가 `data.js` 와 일치 | 통과 | ✅ |
 | 브라우저 플로우 | 1번 선택지만 10회 | 프로토타이퍼 결과, Threads 링크에 문구·URL 포함 | 프로토타이퍼, 문구 정상 | ✅ |
@@ -197,6 +214,9 @@
 | 새로고침 (결과) | 결과에서 새로고침 | 같은 결과 | PRTO-G 동일 | ✅ |
 | 결과 주소 붙여넣기 | 새 탭에 `#r…` | 같은 결과 | 동일 | ✅ |
 | 망가진 주소 | `#q0` `#q99` `#r999` `#rabc` `#zzz` | 빈 화면 없이 랜딩/1번 문항 | 통과 | ✅ |
+| 문항 개편 후 분포 | 59,049 조합 전수 | 어떤 타입도 12% 미만 아님 | 14.4%~23.2% | ✅ |
+| 답 변경 중복 | 마지막 문항 답을 3회 바꿔 재선택 | 합계 100% 유지 | 유지됨 | ✅ |
+| 다섯 타입 도달 | 타입별 답안 5종 | 각 타입이 메인으로 나옴 | 5/5 도달 | ✅ |
 | 동물 문구 적용 후 | 빌드·check·smoke, OG 육안 | headline 16자 이내, nick 4자 이내, 기본 OG 에 캐릭터 5장 안 잘림 | 통과 | ✅ |
 
 ## Error Log
