@@ -31,27 +31,28 @@ for (const t of TYPES) {
 QUESTIONS.forEach((q, qi) => {
   if (!q.text) fail(`Q${qi + 1}: text 누락`);
   if (q.options.length !== 3) fail(`Q${qi + 1}: 선택지는 3개`);
-  const primaries = new Set();
+  const seen = new Set();
   q.options.forEach((o, oi) => {
     if (!o.text) fail(`Q${qi + 1}-${oi + 1}: text 누락`);
-    if (!ids.includes(o.primary)) fail(`Q${qi + 1}-${oi + 1}: primary '${o.primary}' 없음`);
-    if (!ids.includes(o.secondary)) fail(`Q${qi + 1}-${oi + 1}: secondary '${o.secondary}' 없음`);
-    if (o.primary === o.secondary) fail(`Q${qi + 1}-${oi + 1}: primary 와 secondary 가 같음`);
-    if (primaries.has(o.primary)) fail(`Q${qi + 1}: primary '${o.primary}' 가 한 문항에 두 번`);
-    primaries.add(o.primary);
+    if (!ids.includes(o.type)) fail(`Q${qi + 1}-${oi + 1}: type '${o.type}' 없음`);
+    if (seen.has(o.type)) fail(`Q${qi + 1}: type '${o.type}' 가 한 문항에 두 번 — 선택지끼리 구분이 안 된다`);
+    seen.add(o.type);
+    // 화면에 타입 이름·코드가 새어 나가면 답을 역산하게 된다.
+    for (const t of TYPES) {
+      for (const word of [t.ko, t.en, t.code, t.nick]) {
+        if (o.text.includes(word)) fail(`Q${qi + 1}-${oi + 1}: 선택지에 타입 이름 '${word}' 가 보인다`);
+      }
+    }
   });
 });
 
 if (new Set(TYPES.map((t) => (t.code || '')[0])).size !== TYPES.length) fail('code 첫 글자가 타입마다 달라야 서브 코드(PRTO-G)가 구분된다');
 
-/* 2. 균형: 모든 타입이 primary/secondary 로 같은 횟수 등장 */
-const count = { primary: {}, secondary: {} };
-for (const id of ids) { count.primary[id] = 0; count.secondary[id] = 0; }
-for (const q of QUESTIONS) for (const o of q.options) { count.primary[o.primary]++; count.secondary[o.secondary]++; }
-for (const kind of ['primary', 'secondary']) {
-  const values = Object.values(count[kind]);
-  if (new Set(values).size !== 1) fail(`${kind} 등장 횟수 불균형: ${JSON.stringify(count[kind])}`);
-}
+/* 2. 균형: 30개 선택지에서 모든 타입이 같은 횟수(6번) 등장 */
+const count = Object.fromEntries(ids.map((id) => [id, 0]));
+for (const q of QUESTIONS) for (const o of q.options) count[o.type]++;
+const per = (QUESTIONS.length * 3) / ids.length;
+for (const id of ids) if (count[id] !== per) fail(`'${id}' 등장 횟수가 ${count[id]} — 타입마다 ${per}번이어야 한다: ${JSON.stringify(count)}`);
 
 /* 3. 결과 분포: 모든 답 조합(3^10)에서 각 타입이 나올 비율 */
 const total = 3 ** QUESTIONS.length;
@@ -99,8 +100,8 @@ for (const must of ['icons/favicon.svg', 'manifest.webmanifest', 'icons/apple-to
 }
 
 /* 보고 */
-console.log('타입별 등장 횟수 (primary / secondary):');
-for (const id of ids) console.log(`  ${id.padEnd(11)} ${count.primary[id]} / ${count.secondary[id]}`);
+console.log(`타입별 선택지 등장 횟수 (전체 ${QUESTIONS.length * 3}개):`);
+for (const id of ids) console.log(`  ${id.padEnd(11)} ${count[id]}회`);
 console.log(`\n전체 ${total.toLocaleString()} 조합에서 메인 타입 분포:`);
 for (const id of ids) console.log(`  ${id.padEnd(11)} ${(shares[id] * 100).toFixed(1)}%`);
 

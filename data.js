@@ -143,92 +143,93 @@ export const TYPES = [
   },
 ];
 
-// 10문항 × 3지선다. 각 선택지는 primary +2, secondary +1.
-// 균형 규칙: 모든 타입이 primary 6회, secondary 6회. (scripts/check.mjs 가 검증)
+// 10문항 × 3지선다. 선택지 하나는 타입 하나를 가리키고 그 타입에 1점.
+// 균형 규칙: 30개 선택지에서 모든 타입이 정확히 6번. 한 문항 안에 같은 타입이 두 번 나오지 않는다.
+// (scripts/check.mjs 가 검증)
 export const QUESTIONS = [
   {
-    text: '월요일 아침, AI 에이전트에게 제일 먼저 시키는 일은?',
+    text: '갑자기 "이거 가능해?"라는 요청이 들어왔다. 가장 먼저 하는 일은?',
     options: [
-      { text: '"이런 거 되나?" 새 아이디어 3개 프로토타입 뽑기', primary: 'prototyper', secondary: 'builder' },
-      { text: '지난주 프로토타입을 배포 가능한 상태로 정리하기', primary: 'builder', secondary: 'maintainer' },
-      { text: '주말 사이 쌓인 알림과 오류 훑기', primary: 'maintainer', secondary: 'sweeper' },
+      { text: '30분 안에 가장 작은 데모를 만들어 반응을 본다', type: 'prototyper' },
+      { text: '사용자가 실제로 쓸 수 있는 범위와 완료 기준부터 정한다', type: 'builder' },
+      { text: '비슷한 기능의 사용자 반응과 데이터를 찾아 어떤 가설부터 확인할지 정한다', type: 'grower' },
     ],
   },
   {
-    text: '동료가 "이 기능 괜찮지?" 하고 데모를 보여줬다. 첫 반응은?',
+    text: '동료가 새 기능 데모를 보여줬다. 다음 단계로 가장 먼저 제안할 것은?',
     options: [
-      { text: '"재밌다! 이걸 이렇게 바꾸면 완전 새로운데?"', primary: 'prototyper', secondary: 'grower' },
-      { text: '"사용자 데이터 보면 어디서 이탈하는지 나올 것 같은데"', primary: 'grower', secondary: 'sweeper' },
-      { text: '"좋다. 근데 버튼 세 개는 하나로 줄여도 되겠는데?"', primary: 'sweeper', secondary: 'prototyper' },
+      { text: '같은 아이디어의 다른 버전 2~3개를 빠르게 만들어 비교한다', type: 'prototyper' },
+      { text: '어느 사용자가 어떤 상황에서 쓰고, 성공을 무엇으로 판단할지 정한다', type: 'grower' },
+      { text: '지금 기능에서 없어도 되는 단계나 버튼부터 찾는다', type: 'sweeper' },
     ],
   },
   {
-    text: '새 프로젝트에서 가장 설레는 순간은?',
+    text: '출시를 3일 앞두고 아직 불확실한 부분이 많다. 어떻게 움직이나?',
     options: [
-      { text: '백지에 첫 아이디어를 던지는 순간', primary: 'prototyper', secondary: 'grower' },
-      { text: '첫 버전이 실제로 돌아가는 순간', primary: 'builder', secondary: 'prototyper' },
-      { text: '배포 후 지표가 움직이는 순간', primary: 'grower', secondary: 'maintainer' },
+      { text: '핵심 기능만 남기고 정해진 날짜에 출시한다', type: 'builder' },
+      { text: '장애가 날 수 있는 지점과 복구 방법부터 점검한다', type: 'maintainer' },
+      { text: '소수의 사용자에게 먼저 공개해 반응을 확인한다', type: 'grower' },
     ],
   },
   {
-    text: '제품에서 오래된 기능을 발견했다. 아무도 안 쓰는 것 같다.',
+    text: '사용률이 낮은 기능을 발견했다. 다음 행동은?',
     options: [
-      { text: '없애자고 바로 제안한다. 줄어든 만큼 팀이 가벼워진다', primary: 'sweeper', secondary: 'maintainer' },
-      { text: '정말 안 쓰는지 사용 데이터부터 본다', primary: 'grower', secondary: 'sweeper' },
-      { text: '의존하는 곳이 없는지 확인하고 제거 계획을 세운다', primary: 'maintainer', secondary: 'builder' },
+      { text: '핵심 흐름을 방해하는지 보고 제거 후보로 분류한다', type: 'sweeper' },
+      { text: '제거했을 때 장애나 의존성 문제가 없는지 점검한다', type: 'maintainer' },
+      { text: '어떤 사용자만 쓰는지 확인하고 개선 또는 유지 여부를 실험한다', type: 'grower' },
     ],
   },
   {
-    text: 'AI가 당신의 일에서 가장 크게 바꾼 것은?',
+    text: 'AI를 활용하면서 가장 자주 달라진 행동은?',
     options: [
-      { text: '아이디어를 시도하는 비용이 0에 가까워졌다', primary: 'prototyper', secondary: 'builder' },
-      { text: '혼자서도 프로덕션급 제품을 끝까지 만든다', primary: 'builder', secondary: 'grower' },
-      { text: '반복 운영 작업을 맡기고 시스템을 더 단단하게 만든다', primary: 'maintainer', secondary: 'sweeper' },
+      { text: '아이디어를 짧은 시간 안에 여러 버전으로 시험한다', type: 'prototyper' },
+      { text: '기능을 실제 사용 가능한 상태까지 직접 마무리한다', type: 'builder' },
+      { text: '반복 작업과 운영 점검을 자동화해 시스템을 안정적으로 유지한다', type: 'maintainer' },
     ],
   },
   {
-    text: '출시 직후 일주일, 당신은 어디에 있나?',
+    text: '출시 후 예상보다 문제가 많다. 가장 먼저 확인할 것은?',
     options: [
-      { text: '유저 반응 보면서 다음 실험 돌리는 중', primary: 'grower', secondary: 'prototyper' },
-      { text: '대시보드 보면서 장애와 속도 지키는 중', primary: 'maintainer', secondary: 'grower' },
-      { text: '급하게 붙였던 것들 잘라내고 정리하는 중', primary: 'sweeper', secondary: 'builder' },
+      { text: '오류율, 지연 시간, 모니터링 상태를 확인한다', type: 'maintainer' },
+      { text: '급하게 추가한 기능과 복잡한 흐름을 줄인다', type: 'sweeper' },
+      { text: '어떤 사용자군에서 이탈하거나 반응이 달라졌는지 확인한다', type: 'grower' },
     ],
   },
   {
-    text: '가장 뿌듯했던 작업은?',
+    text: '일정이 이틀 밀렸다. 무엇을 선택하나?',
     options: [
-      { text: '새 기능 하나를 처음부터 끝까지 만들어 그날 내보낸 것', primary: 'builder', secondary: 'prototyper' },
-      { text: '잔뜩 덜어냈는데 아무것도 안 깨지고 더 빨라진 것', primary: 'sweeper', secondary: 'maintainer' },
-      { text: '작은 것 하나 바꿨는데 전환율이 오른 것', primary: 'grower', secondary: 'prototyper' },
+      { text: '범위를 줄이고 사용 가능한 핵심 버전을 먼저 출시한다', type: 'builder' },
+      { text: '방향이 맞는지 확인하기 위한 짧은 실험용 버전을 만든다', type: 'prototyper' },
+      { text: '가치가 낮은 기존 작업을 덜어내 일정과 집중력을 확보한다', type: 'sweeper' },
     ],
   },
   {
-    text: '팀에서 당신에게 가장 자주 오는 요청은?',
+    text: '핵심 지표가 갑자기 떨어졌다. 가장 먼저 하는 일은?',
     options: [
-      { text: '"이거 되는지 빨리 한번 만들어봐 줄래?"', primary: 'prototyper', secondary: 'builder' },
-      { text: '"이거 언제부터 실제로 쓸 수 있어?"', primary: 'builder', secondary: 'maintainer' },
-      { text: '"이거 왜 느려? 왜 터졌어?"', primary: 'maintainer', secondary: 'sweeper' },
+      { text: '어느 사용자군과 단계에서 변화가 생겼는지 쪼개서 본다', type: 'grower' },
+      { text: '오류, 속도, 배포 상태부터 확인한다', type: 'maintainer' },
+      { text: '영향이 큰 문제를 우선 고쳐 빠르게 배포한다', type: 'builder' },
     ],
   },
   {
-    text: '"제품이 너무 복잡해졌다"는 말이 나왔다. 당신의 해결책은?',
+    text: '제품이 너무 복잡해졌다. 당신의 해결책은?',
     options: [
-      { text: '기능을 덜어낸다. 남긴 것이 더 잘 보이게', primary: 'sweeper', secondary: 'grower' },
-      { text: '사용 데이터를 보고 핵심 흐름만 남긴다', primary: 'grower', secondary: 'sweeper' },
-      { text: '구조를 다시 잡아서 커져도 안 무너지게 한다', primary: 'maintainer', secondary: 'builder' },
+      { text: '기능과 단계를 덜어내고 핵심 흐름만 남긴다', type: 'sweeper' },
+      { text: '더 단순한 구조를 작은 프로토타입으로 먼저 비교한다', type: 'prototyper' },
+      { text: '기존 사용자를 깨뜨리지 않도록 경계를 나누고 구조를 안정화한다', type: 'maintainer' },
     ],
   },
   {
-    text: '1년 뒤, 어떤 말을 듣고 싶나?',
+    text: '새 기능을 검토할 때 가장 중요하게 보는 것은?',
     options: [
-      { text: '"그 아이디어, 원래 네가 처음 낸 거잖아"', primary: 'prototyper', secondary: 'grower' },
-      { text: '"네가 아니었으면 이건 출시 못 했어"', primary: 'builder', secondary: 'prototyper' },
-      { text: '"이거 진짜 단순하고 깔끔하다"', primary: 'sweeper', secondary: 'maintainer' },
+      { text: '아직 아무도 시도하지 않은 가능성을 빠르게 확인하는 것', type: 'prototyper' },
+      { text: '정한 날짜에 실제 사용 가능한 상태로 만드는 것', type: 'builder' },
+      { text: '필요한 것만 남겨 누구나 쉽게 사용할 수 있게 만드는 것', type: 'sweeper' },
     ],
   },
 ];
 
-export const SCORING = { primary: 2, secondary: 1 };
+export const SCORING = { point: 1 };
 
 // MBTI 처럼 읽히는 결과 코드. 서브가 없으면 메인 코드만.
 export const resultCode = (main, sub) => (sub ? `${main.code}-${sub.code[0]}` : main.code);
