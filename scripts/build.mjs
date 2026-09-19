@@ -17,7 +17,7 @@ const art = (id) => {
 
 /* 1. r/<type>/index.html — 크롤러가 읽는 OG 태그 + 사람은 본편으로 이동 */
 for (const t of TYPES) {
-  const title = `나의 AX 타입: ${t.code} ${t.ko} · ${t.nick}`;
+  const title = `나의 AX 타입: ${t.code} ${t.nick} · ${t.ko}`;
   const desc = `"${t.headline}" ${t.tags.map((x) => `#${x}`).join(' ')} · ${SITE.tagline} ${SITE.length}.`;
   const html = `<!doctype html>
 <html lang="ko">
@@ -35,7 +35,7 @@ for (const t of TYPES) {
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:url" content="${SITE.url}/r/${t.id}/">
-  <meta property="og:image:alt" content="${esc(t.ko)} 피규어">
+  <meta property="og:image:alt" content="${esc(t.ko)} ${esc(t.nick)} 피규어">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(title)}">
   <meta name="twitter:description" content="${esc(desc)}">
@@ -47,7 +47,7 @@ for (const t of TYPES) {
   <script>location.replace('../../?r=${t.id}');</script>
 </head>
 <body>
-  <p>${t.emoji} ${esc(t.ko)} · ${esc(t.headline)} — <a href="../../?r=${t.id}">결과 보기</a></p>
+  <p>${t.emoji} ${esc(t.ko)} · ${esc(t.nick)} · ${esc(t.headline)} — <a href="../../?r=${t.id}">결과 보기</a></p>
 </body>
 </html>
 `;
@@ -69,7 +69,7 @@ function ogHtml({ color, ink, emoji, ko, en, headline, label, cta, emojiSize = 2
 <style>
   html,body{margin:0}
   body{width:1200px;height:630px;background:${color};color:${ink};font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;display:flex;${stacked ? 'flex-direction:column;align-items:flex-start;justify-content:center;gap:36px' : 'align-items:center;justify-content:space-between'};padding:0 96px;box-sizing:border-box}
-  .l{display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;max-width:${stacked ? '1000px' : '560px'};margin-right:40px}
+  .l{display:flex;flex-direction:column;gap:10px;${stacked ? 'flex:none' : 'flex:1;margin-right:40px'};min-width:0;max-width:${stacked ? '1000px' : '560px'}}
   .label{font-size:30px;font-weight:700;opacity:.85;display:flex;align-items:center;gap:14px}
   .code{font-size:28px;font-weight:900;letter-spacing:.14em;padding:6px 16px;border-radius:12px;background:rgba(255,255,255,.22)}
   body.dark .code{background:rgba(0,0,0,.1)}
@@ -85,7 +85,7 @@ function ogHtml({ color, ink, emoji, ko, en, headline, label, cta, emojiSize = 2
 </style></head><body class="${ink.toLowerCase() !== '#ffffff' ? 'dark' : ''}">
 <div class="l">
   <div class="label">${esc(label)}${code ? `<span class="code">${esc(code)}</span>` : ''}</div>
-  <div class="name">${esc(ko)}${en ? `<small>${nick ? esc(nick) + ' · ' : ''}${esc(en)}</small>` : ''}</div>
+  <div class="name">${esc(nick || ko)}${en ? `<small>${nick ? esc(ko) + ' · ' : ''}${esc(en)}</small>` : ''}</div>
   <div class="headline">${esc(headline)}</div>
   <div class="cta">${esc(cta)}</div>
 </div>
@@ -112,7 +112,7 @@ const cards = [
   {
     file: 'default', label: 'AX = AI Transformation', color: '#16161a', ink: '#ffffff',
     emoji: TYPES.map((t) => t.emoji).join(''), emojiSize: 104, stacked: true, images: TYPES.map((t) => art(t.id)).filter(Boolean),
-    ko: SITE.name, en: '', headline: TYPES.map((t) => t.ko).join(' · ') + ' 중 나는?', cta,
+    ko: SITE.name, en: '', headline: TYPES.map((t) => t.nick).join(' · ') + ' 중 나는?', cta,
   },
 ];
 

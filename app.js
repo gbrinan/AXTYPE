@@ -12,6 +12,26 @@ const artUrl = (id) => `assets/${id}.webp`; // 타입별 캐릭터. 파일명은
 
 const state = { answers: [] };
 
+// 화면을 주소에 남긴다. 문항은 #q<번호>, 결과는 #r<답안>.
+// 결과 해시는 답을 그대로 담고 있어서 새로고침해도 같은 결과가 다시 나온다.
+// 문항 도중의 답은 sessionStorage 에 두되, 막혀 있으면 처음부터 다시 시작한다.
+const STORE = 'axtype-answers';
+const saveAnswers = (a) => { try { sessionStorage.setItem(STORE, a.join('')); } catch { /* 저장이 막힌 브라우저 */ } };
+const loadAnswers = () => { try { return digits(sessionStorage.getItem(STORE) || ''); } catch { return null; } };
+const clearAnswers = () => { try { sessionStorage.removeItem(STORE); } catch { /* 무시 */ } };
+
+// '0120' → [0,1,2,0]. 선택지 번호가 아니면 null.
+function digits(s) {
+  if (!/^[0-2]*$/.test(s) || s.length > QUESTIONS.length) return null;
+  return s.split('').map(Number);
+}
+
+const urlFor = (hash) => location.pathname + (hash || '');
+function go(hash, { replace = false } = {}) {
+  history[replace ? 'replaceState' : 'pushState'](null, '', urlFor(hash));
+  route();
+}
+
 function esc(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -39,13 +59,13 @@ function landing() {
       <p class="lead">${esc(SITE.tagline)}</p>
       <p class="desc">${esc(SITE.description)}</p>
       <div class="lineup">
-        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어" loading="lazy"><figcaption><b>${esc(t.code)}</b> ${esc(t.ko)}</figcaption></figure>`).join('')}
+        ${TYPES.map((t) => `<figure class="figure"><img src="${artUrl(t.id)}" alt="${esc(t.ko)} ${esc(t.nick)} 피규어" loading="lazy"><figcaption><b>${esc(t.code)}</b> ${esc(t.nick)}<small>${esc(t.ko)}</small></figcaption></figure>`).join('')}
       </div>
       <button class="btn" id="start">테스트 시작 →</button>
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
     </section>
   `);
-  document.getElementById('start').onclick = () => { state.answers = []; question(0); };
+  document.getElementById('start').onclick = () => { state.answers = []; clearAnswers(); go('#q1'); };
 }
 
 /* ---------- 화면: 문항 ---------- */
@@ -69,11 +89,12 @@ function question(i) {
     b.onclick = () => {
       state.answers[i] = Number(b.dataset.k);
       state.answers.length = i + 1;
-      i + 1 < n ? question(i + 1) : result(score(state.answers));
+      saveAnswers(state.answers);
+      go(i + 1 < n ? `#q${i + 2}` : `#r${state.answers.join('')}`);
     };
   });
   const back = document.getElementById('back');
-  if (back) back.onclick = () => question(i - 1);
+  if (back) back.onclick = () => history.back();
 }
 
 /* ---------- 화면: 결과 ---------- */
@@ -82,12 +103,12 @@ function typeCard(t, { label, sub } = {}) {
   return `
     <section class="result-card" data-ink="${dark ? 'dark' : 'light'}" style="--type-color:${t.color};--type-ink:${t.ink}">
       <div class="top"><p class="label">${esc(label)}</p><p class="code">${esc(resultCode(t, sub))}</p></div>
-      <img class="art" src="${artUrl(t.id)}" alt="${esc(t.ko)} 피규어">
-      <h1 class="name">${esc(t.ko)}<small>${esc(t.nick)} · ${esc(t.en)}</small></h1>
+      <img class="art" src="${artUrl(t.id)}" alt="${esc(t.ko)} ${esc(t.nick)} 피규어">
+      <h1 class="name">${esc(t.nick)}<small>${esc(t.ko)} · ${esc(t.en)}</small></h1>
       <p class="headline">${esc(t.headline)}</p>
       <p class="tagline">${esc(t.tagline)}</p>
       <p class="tags">${t.tags.map((x) => `<span>#${esc(x)}</span>`).join('')}</p>
-      ${sub ? `<p class="sub">서브 타입 · ${sub.emoji} ${esc(sub.ko)} ${esc(sub.code)}</p>` : ''}
+      ${sub ? `<p class="sub">서브 타입 · ${sub.emoji} ${esc(sub.nick)} ${esc(sub.ko)} ${esc(sub.code)}</p>` : ''}
     </section>
   `;
 }
@@ -97,7 +118,7 @@ function typeBody(t) {
   const clash = byId[t.clash.id];
   return `
     <section class="section">
-      <h2>동료가 알아보는 순간</h2>
+      <h2>무리가 알아보는 순간</h2>
       <ul>${t.traits.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
     </section>
     <section class="section">
@@ -111,15 +132,15 @@ function typeBody(t) {
     <section class="section">
       <h2>케미</h2>
       <div class="chem">
-        <div><b>최고의 짝</b><strong>${best.emoji} ${esc(best.ko)}</strong><span>${esc(t.best.why)}</span></div>
-        <div><b>부딪히지만 필요한 짝</b><strong>${clash.emoji} ${esc(clash.ko)}</strong><span>${esc(t.clash.why)}</span></div>
+        <div><b>가장 잘 맞는 짝</b><strong>${best.emoji} ${esc(best.nick)}</strong><span>${esc(t.best.why)}</span></div>
+        <div><b>부딪히지만 필요한 짝</b><strong>${clash.emoji} ${esc(clash.nick)}</strong><span>${esc(t.clash.why)}</span></div>
       </div>
     </section>
   `;
 }
 
 function result({ main, sub, ranked }) {
-  document.title = `나의 AX 타입: ${resultCode(main, sub)} ${main.ko}`;
+  document.title = `나의 AX 타입: ${resultCode(main, sub)} ${main.nick}`;
   const url = resultUrl(main.id);
   const text = shareText(main, sub, url);
   const threads = `https://www.threads.com/intent/post?text=${encodeURIComponent(text)}`;
@@ -138,15 +159,15 @@ function result({ main, sub, ranked }) {
       </section>
       ${typeBody(main)}
       <section class="section">
-        <h2>내 안의 다섯 타입</h2>
+        <h2>내 안의 다섯 동물</h2>
         <div class="bars">
           ${ranked.map((r) => {
             const t = byId[r.id];
             const pct = Math.round((r.total / TOTAL_POINTS) * 100);
-            return `<div class="row"><span>${t.emoji} ${esc(t.ko)}</span><div class="track"><i style="width:${pct}%;background:${t.color}"></i></div><span class="pct">${pct}%</span></div>`;
+            return `<div class="row"><span>${t.emoji} ${esc(t.nick)}</span><div class="track"><i style="width:${pct}%;background:${t.color}"></i></div><span class="pct">${pct}%</span></div>`;
           }).join('')}
         </div>
-        <p class="footnote">내 답이 다섯 타입에 나뉜 비율입니다. 많은 사람이 두세 타입에 걸쳐 있으니 메인과 서브를 함께 보세요.</p>
+        <p class="footnote">내 답이 다섯 동물에게 나뉜 비율입니다. 많은 사람이 두세 동물에 걸쳐 있으니 메인과 서브를 함께 보세요.</p>
       </section>
       <button class="btn secondary" id="retry">다시 하기</button>
       <p class="footnote">재미로 보는 테스트입니다. 5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
@@ -158,12 +179,12 @@ function result({ main, sub, ranked }) {
     catch { toast('복사에 실패했어요. 주소창을 이용해 주세요'); }
   };
   document.getElementById('save').onclick = () => saveCard(main, sub);
-  document.getElementById('retry').onclick = () => { history.replaceState(null, '', location.pathname); landing(); };
+  document.getElementById('retry').onclick = () => { state.answers = []; clearAnswers(); go(''); };
 }
 
 /* ---------- 화면: 공유받은 결과 (?r=<type>) ---------- */
 function shared(t) {
-  document.title = `${t.code} ${t.ko}: ${t.headline}`;
+  document.title = `${t.code} ${t.nick}: ${t.headline}`;
   render(`
     <div class="screen">
       ${typeCard(t, { label: '공유받은 AX 타입' })}
@@ -173,9 +194,9 @@ function shared(t) {
       <p class="footnote">5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
     </div>
   `);
-  const go = () => { history.replaceState(null, '', location.pathname); state.answers = []; question(0); };
-  document.getElementById('start').onclick = go;
-  document.getElementById('start2').onclick = go;
+  const begin = () => { state.answers = []; clearAnswers(); go('#q1'); };
+  document.getElementById('start').onclick = begin;
+  document.getElementById('start2').onclick = begin;
 }
 
 /* ---------- 결과 카드 이미지 (1080×1350, 4:5) ---------- */
@@ -213,10 +234,10 @@ async function saveCard(main, sub) {
   }
 
   ctx.font = font(900, 104);
-  ctx.fillText(main.ko, W / 2, 920);
+  ctx.fillText(main.nick, W / 2, 920);
   ctx.font = font(700, 40);
   ctx.globalAlpha = .8;
-  ctx.fillText(`${main.nick} · ${main.en}`, W / 2, 980);
+  ctx.fillText(`${main.ko} · ${main.en}`, W / 2, 980);
   ctx.globalAlpha = 1;
 
   ctx.font = font(700, 54);
@@ -225,7 +246,7 @@ async function saveCard(main, sub) {
   if (sub) {
     ctx.font = font(700, 36);
     ctx.globalAlpha = .9;
-    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.ko}`, W / 2, 1130);
+    ctx.fillText(`서브 타입 · ${sub.emoji} ${sub.nick}`, W / 2, 1130);
     ctx.globalAlpha = 1;
   }
 
@@ -251,5 +272,25 @@ async function saveCard(main, sub) {
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
-const sharedType = typeOf(new URLSearchParams(location.search).get('r'));
-sharedType ? shared(sharedType) : landing();
+// 주소 → 화면. 뒤로가기·앞으로가기·새로고침이 모두 여기를 지난다.
+function route() {
+  const h = location.hash;
+  const done = h.startsWith('#r') && digits(h.slice(2));
+  if (done && done.length === QUESTIONS.length) {
+    state.answers = done;
+    return result(score(done));
+  }
+  const q = /^#q(\d+)$/.exec(h);
+  if (q) {
+    const i = Math.min(Math.max(Number(q[1]), 1), QUESTIONS.length) - 1;
+    // 새로고침이면 state 가 비어 있다. 저장해 둔 답으로 되살리고, 그것도 없으면 1번부터.
+    if (state.answers.length < i) state.answers = loadAnswers()?.slice(0, i) || [];
+    if (state.answers.length < i) return go('#q1', { replace: true });
+    return question(i);
+  }
+  const sharedType = typeOf(new URLSearchParams(location.search).get('r'));
+  return sharedType ? shared(sharedType) : landing();
+}
+
+window.addEventListener('popstate', route);
+route();
