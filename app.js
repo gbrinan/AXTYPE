@@ -1,5 +1,5 @@
 import { SITE, TYPES, QUESTIONS, shareText, resultCode } from './data.js';
-import { score, TOTAL_POINTS } from './scoring.js';
+import { score, percentages } from './scoring.js';
 
 const app = document.getElementById('app');
 const byId = Object.fromEntries(TYPES.map((t) => [t.id, t]));
@@ -142,6 +142,8 @@ function typeBody(t) {
 function result({ main, sub, ranked }) {
   document.title = `나의 AX 타입: ${resultCode(main, sub)} ${main.nick}`;
   const url = resultUrl(main.id);
+  // 막대 퍼센트는 합이 정확히 100% 가 되도록 나눈다 (scoring.js 의 최대 잔여법).
+  const pcts = percentages(ranked);
   const text = shareText(main, sub, url);
   const threads = `https://www.threads.com/intent/post?text=${encodeURIComponent(text)}`;
   const x = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
@@ -161,9 +163,9 @@ function result({ main, sub, ranked }) {
       <section class="section">
         <h2>내 안의 다섯 동물</h2>
         <div class="bars">
-          ${ranked.map((r) => {
+          ${ranked.map((r, i) => {
             const t = byId[r.id];
-            const pct = Math.round((r.total / TOTAL_POINTS) * 100);
+            const pct = pcts[i];
             return `<div class="row"><span>${t.emoji} ${esc(t.nick)}</span><div class="track"><i style="width:${pct}%;background:${t.color}"></i></div><span class="pct">${pct}%</span></div>`;
           }).join('')}
         </div>
@@ -188,7 +190,7 @@ function shared(t) {
   render(`
     <div class="screen">
       ${typeCard(t, { label: '공유받은 AX 타입' })}
-      <button class="btn" id="start">나도 테스트하기 (1분) →</button>
+      <button class="btn" id="start">나도 테스트하기 (2분) →</button>
       ${typeBody(t)}
       <button class="btn secondary" id="start2">나는 어떤 타입일까? →</button>
       <p class="footnote">5가지 아키타입 출처: <a href="${SITE.source.url}" target="_blank" rel="noopener">${esc(SITE.source.label)}</a></p>
