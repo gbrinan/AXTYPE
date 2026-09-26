@@ -6,7 +6,9 @@ import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { TYPES } from '../data.js';
+import { TYPES, QUESTIONS } from '../data.js';
+
+const Q = QUESTIONS.length; // 문항 수가 바뀌어도 이 파일은 그대로 돈다
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
@@ -42,8 +44,8 @@ try {
   expect((await page.textContent('.progress span')).trim().startsWith('1 /'), '이전 버튼이 1번 문항으로 돌아가지 않는다');
   expect(await page.$('.option.selected'), '이전으로 돌아왔을 때 고른 답이 표시되지 않는다');
 
-  // 1번 선택지만 10번 → 프로토타이퍼
-  for (let i = 0; i < 10; i++) { await page.waitForSelector('.option'); await page.click('.option >> nth=0'); }
+  // 1번 선택지만 문항 수만큼 → 프로토타이퍼
+  for (let i = 0; i < Q; i++) { await page.waitForSelector('.option'); await page.click('.option >> nth=0'); }
   await page.waitForSelector('.result-card');
   const first = TYPES[0];
   expect((await page.textContent('.result-card .name')).includes(first.ko), '1번만 고르면 첫 타입이 나와야 한다');
@@ -56,7 +58,7 @@ try {
   expect((await page.$$('.bars .row')).length === TYPES.length, '막대가 타입 수와 다르다');
   const pcts = await page.$$eval('.bars .pct', (els) => els.map((e) => parseInt(e.textContent, 10)));
   const sum = pcts.reduce((a, b) => a + b, 0);
-  expect(sum >= 98 && sum <= 102, `막대 합이 100% 가 아니다: ${sum}`);
+  expect(sum === 100, `막대 합이 정확히 100% 가 아니다: ${sum}`);
 
   // 카드 저장
   const [dl] = await Promise.all([page.waitForEvent('download'), page.click('#save')]);
@@ -65,19 +67,19 @@ try {
 
   // 주소에 상태가 남는가: 뒤로가기, 새로고침, 주소 붙여넣기
   const resultHash = new URL(page.url()).hash;
-  expect(/^#r[0-2]{10}$/.test(resultHash), `결과 주소에 답이 남지 않는다: ${resultHash}`);
+  expect(new RegExp(`^#r[0-2]{${Q}}$`).test(resultHash), `결과 주소에 답이 남지 않는다: ${resultHash}`);
   await page.reload();
   await page.waitForSelector('.result-card');
   expect((await page.textContent('.result-card .code')).trim() === code, '결과를 새로고침하면 결과가 바뀐다');
   await page.goBack();
   await page.waitForSelector('.option');
-  expect((await page.textContent('.progress span')).trim().startsWith('10 /'), '결과에서 뒤로가기가 마지막 문항으로 오지 않는다');
+  expect((await page.textContent('.progress span')).trim().startsWith(`${Q} /`), '결과에서 뒤로가기가 마지막 문항으로 오지 않는다');
   await page.goBack();
   await page.waitForSelector('.option');
   expect(await page.$('.option.selected'), '뒤로 간 문항에 고른 답이 남아 있지 않다');
   await page.reload();
   await page.waitForSelector('.option');
-  expect((await page.textContent('.progress span')).trim().startsWith('9 /'), '문항 도중 새로고침하면 자리를 잃는다');
+  expect((await page.textContent('.progress span')).trim().startsWith(`${Q - 1} /`), '문항 도중 새로고침하면 자리를 잃는다');
 
   // 망가진 주소로 들어와도 안전하게
   for (const bad of ['#q0', '#q99', '#r999', '#rabc', '#zzz']) {
@@ -106,7 +108,7 @@ try {
   // 섞어서 → 서브 타입 표시
   await page.goto(BASE);
   await page.click('#start');
-  for (const k of [1, 2, 0, 2, 1, 0, 1, 2, 0, 1]) { await page.waitForSelector('.option'); await page.click(`.option >> nth=${k}`); }
+  for (let i = 0; i < Q; i++) { const k = [1, 2, 0, 2, 1, 0, 1][i % 7]; await page.waitForSelector('.option'); await page.click(`.option >> nth=${k}`); }
   await page.waitForSelector('.bars');
   expect(await page.$('.result-card .sub'), '섞어 답했는데 서브 타입이 없다');
 
