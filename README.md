@@ -1,5 +1,7 @@
 # AX 타입 테스트
 
+![AXTYPE](.github/banner.jpg)
+
 **AI 시대, 당신은 어떤 일꾼 동물입니까?** 10문항, 1분. 결과는 다섯 동물 중 하나. AX 는 AI Transformation(AI 전환)의 국내 통용 약어다.
 
 | 코드 | 타입 | 별명 | 한 줄 |
